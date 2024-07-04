@@ -12,7 +12,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.coalee.ho",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.coalee.ho",
+              "com.googleusercontent.apps.166518374258-8ndnv0ef07jjvska2ldhpnlvqte1bpjq"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,8 +35,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "@react-native-google-signin/google-signin"
-    ]
+    "plugins": ["@react-native-google-signin/google-signin"]
   }
 }

@@ -3,4 +3,5 @@
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
   <string name="server_client_id">166518374258-bgkc263ou56g66mpm716ot6qt1jv2rhu.apps.googleusercontent.com</string>
+  <string name="google_web_client_id">166518374258-p0p4gqpmjq4ijbqfrqrjsub4me72c61a.apps.googleusercontent.com</string>
 </resources>

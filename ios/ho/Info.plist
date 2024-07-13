@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <!-- 카카오톡으로 로그인 -->
+        <string>kakaokompassauth</string>
+        <!-- 카카오톡 공유 -->
+        <string>kakaolink</string>
+        <!-- 카카오톡 채널 -->
+        <string>kakaoplus</string>
+    </array>
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -29,6 +38,7 @@
         <array>
           <string>com.coalee.ho</string>
           <string>com.googleusercontent.apps.166518374258-8ndnv0ef07jjvska2ldhpnlvqte1bpjq</string>
+          <string>kakaoc1e27c6cccdf342a776ba5f1c6fc6bc9</string>
         </array>
       </dict>
     </array>

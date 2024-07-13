@@ -4,10 +4,10 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import { login as kakaoLogin } from "@react-native-kakao/user";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import { supabase } from "../utils/supabase";
 import { googleIosClientId, googleWebClientId } from "../utils/config";
-import { Image, Pressable, StyleSheet, View } from "react-native";
 
 interface AuthProps {
   onLoginSuccess: () => void;
@@ -70,11 +70,32 @@ export default function ({ onLoginSuccess }: AuthProps) {
 
   const handleKakaoLogin = async () => {
     try {
+      console.log("Kakao Sign-In button pressed");
       const token = await kakaoLogin();
       console.log("Kakao login success", token);
 
-      // 추가적인 로직이 필요하면 여기에 작성합니다.
-      onLoginSuccess();
+      if (token) {
+        console.log(
+          "Kakao login token present, attempting Supabase sign-in..."
+        );
+        const { data, error } = await supabase.auth.signInWithIdToken({
+          provider: "kakao",
+          token: token.accessToken,
+        });
+
+        if (error && error.message !== "Bad ID token") {
+          throw error;
+        }
+
+        console.log("Supabase sign-in response: ", data);
+        console.log("User: ", data.user);
+        console.log("Session: ", data.session);
+
+        // 로그인 성공 시 약관 동의 페이지로 이동
+        onLoginSuccess();
+      } else {
+        throw new Error("No Kakao login token present!");
+      }
     } catch (error) {
       console.error("Kakao login error: ", error);
     }
@@ -106,8 +127,6 @@ const styles = StyleSheet.create({
     marginTop: 20, // 필요한 경우 상단 여백 추가
   },
   googleButton: {
-    width: 54,
-    height: 54,
     marginRight: 10,
   },
   kakaoButton: {},

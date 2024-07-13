@@ -1,0 +1,790 @@
+diff --git a/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/results.bin b/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/transformed/classes/classes_dex/classes.dex b/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..4f2d8b4
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/.transforms/2a794fc41d3d84ce3fd987af55509d9a/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/generated/source/buildConfig/debug/net/mjstudio/rnkakao/core/BuildConfig.java b/node_modules/@react-native-kakao/core/android/build/generated/source/buildConfig/debug/net/mjstudio/rnkakao/core/BuildConfig.java
+new file mode 100644
+index 0000000..2117e0d
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/generated/source/buildConfig/debug/net/mjstudio/rnkakao/core/BuildConfig.java
+@@ -0,0 +1,12 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package net.mjstudio.rnkakao.core;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "net.mjstudio.rnkakao.core";
++  public static final String BUILD_TYPE = "debug";
++  // Field from default config.
++  public static final boolean IS_NEW_ARCHITECTURE_ENABLED = false;
++}
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..8819aea
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="net.mjstudio.rnkakao.core" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+new file mode 100644
+index 0000000..8b9d181
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "net.mjstudio.rnkakao.core",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/aar_main_jar/debug/classes.jar b/node_modules/@react-native-kakao/core/android/build/intermediates/aar_main_jar/debug/classes.jar
+new file mode 100644
+index 0000000..4b671b0
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/aar_main_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/@react-native-kakao/core/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/@react-native-kakao/core/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/annotations_typedef_file/debug/typedefs.txt b/node_modules/@react-native-kakao/core/android/build/intermediates/annotations_typedef_file/debug/typedefs.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/@react-native-kakao/core/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
+new file mode 100644
+index 0000000..4e68810
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/@react-native-kakao/core/android/build/intermediates/compile_r_class_jar/debug/R.jar
+new file mode 100644
+index 0000000..33c7328
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/@react-native-kakao/core/android/build/intermediates/compile_symbol_list/debug/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state
+new file mode 100644
+index 0000000..ad5e304
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..150daa5
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Sun Jul 14 00:21:57 KST 2024
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..f3bf58b
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..6ca8169
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..6d4c37d
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+new file mode 100644
+index 0000000..7c047c0
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/build/intermediates/shader_assets/debug/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/java_res/debug/out/META-INF/react-native-kakao_core_debug.kotlin_module b/node_modules/@react-native-kakao/core/android/build/intermediates/java_res/debug/out/META-INF/react-native-kakao_core_debug.kotlin_module
+new file mode 100644
+index 0000000..016c154
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/java_res/debug/out/META-INF/react-native-kakao_core_debug.kotlin_module differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/javac/debug/classes/net/mjstudio/rnkakao/core/BuildConfig.class b/node_modules/@react-native-kakao/core/android/build/intermediates/javac/debug/classes/net/mjstudio/rnkakao/core/BuildConfig.class
+new file mode 100644
+index 0000000..6beef07
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/javac/debug/classes/net/mjstudio/rnkakao/core/BuildConfig.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/@react-native-kakao/core/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-kakao/core/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..677b7a5
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="net.mjstudio.rnkakao.core" >
++4
++5    <uses-sdk android:minSdkVersion="21" />
++6
++7</manifest>
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/merged_java_res/debug/feature-react-native-kakao_core.jar b/node_modules/@react-native-kakao/core/android/build/intermediates/merged_java_res/debug/feature-react-native-kakao_core.jar
+new file mode 100644
+index 0000000..687d615
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/merged_java_res/debug/feature-react-native-kakao_core.jar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/@react-native-kakao/core/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+new file mode 100644
+index 0000000..8819aea
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="net.mjstudio.rnkakao.core" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/@react-native-kakao/core/android/build/intermediates/navigation_json/debug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/navigation_json/debug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/@react-native-kakao/core/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
+new file mode 100644
+index 0000000..4c86c1e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/@react-native-kakao/core/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+new file mode 100644
+index 0000000..e60484d
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+@@ -0,0 +1 @@
++net.mjstudio.rnkakao.core
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab
+new file mode 100644
+index 0000000..4e57d88
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream
+new file mode 100644
+index 0000000..df9c484
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len
+new file mode 100644
+index 0000000..f6eb835
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at
+new file mode 100644
+index 0000000..527cb7b
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i
+new file mode 100644
+index 0000000..f4fc067
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab
+new file mode 100644
+index 0000000..12a0ed3
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream
+new file mode 100644
+index 0000000..fa4921e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len
+new file mode 100644
+index 0000000..8f5a4cf
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len
+new file mode 100644
+index 0000000..a363176
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at
+new file mode 100644
+index 0000000..ddb68c3
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i
+new file mode 100644
+index 0000000..f94c94d
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab
+new file mode 100644
+index 0000000..2b0bf43
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..fa4921e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..8f5a4cf
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len
+new file mode 100644
+index 0000000..a363176
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..fc5cc6f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i
+new file mode 100644
+index 0000000..f94c94d
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab
+new file mode 100644
+index 0000000..ceec4a4
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream
+new file mode 100644
+index 0000000..82be558
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len
+new file mode 100644
+index 0000000..8aefb3a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at
+new file mode 100644
+index 0000000..e52f207
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i
+new file mode 100644
+index 0000000..b740d57
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab
+new file mode 100644
+index 0000000..ce95448
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream
+new file mode 100644
+index 0000000..7607bfa
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream.len
+new file mode 100644
+index 0000000..1a44f27
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.values.at
+new file mode 100644
+index 0000000..a7c9f47
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i
+new file mode 100644
+index 0000000..f09b3d6
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/inline-functions.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab
+new file mode 100644
+index 0000000..aff9ddd
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..74cd1ca
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..a20a1e3
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len
+new file mode 100644
+index 0000000..003bc0e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..7ebeeb7
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i
+new file mode 100644
+index 0000000..b5cdda2
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab
+new file mode 100644
+index 0000000..bdf584a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream
+new file mode 100644
+index 0000000..c2dfc8f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream.len
+new file mode 100644
+index 0000000..6645728
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.values.at
+new file mode 100644
+index 0000000..e3747bf
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i
+new file mode 100644
+index 0000000..c99497e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/java-sources-proto-map.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab
+new file mode 100644
+index 0000000..0f3c6c1
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream
+new file mode 100644
+index 0000000..fc60744
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len
+new file mode 100644
+index 0000000..25c4d2f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at
+new file mode 100644
+index 0000000..6fcb00a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i
+new file mode 100644
+index 0000000..c569045
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab
+new file mode 100644
+index 0000000..0bc947d
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream
+new file mode 100644
+index 0000000..9343f4c
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len
+new file mode 100644
+index 0000000..563fc1a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len
+new file mode 100644
+index 0000000..003bc0e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at
+new file mode 100644
+index 0000000..653ce19
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i
+new file mode 100644
+index 0000000..75501df
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab
+new file mode 100644
+index 0000000..9f640cb
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream
+new file mode 100644
+index 0000000..182eab7
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len
+new file mode 100644
+index 0000000..478328a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at
+new file mode 100644
+index 0000000..5cb1ef6
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i
+new file mode 100644
+index 0000000..8d2e2bb
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab
+new file mode 100644
+index 0000000..4284cf4
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream
+new file mode 100644
+index 0000000..0c18760
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len
+new file mode 100644
+index 0000000..68b143b
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at
+new file mode 100644
+index 0000000..df59630
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i
+new file mode 100644
+index 0000000..c6c87af
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab
+new file mode 100644
+index 0000000..5f0eb96
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream
+new file mode 100644
+index 0000000..62996d2
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len
+new file mode 100644
+index 0000000..d3d0289
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len
+new file mode 100644
+index 0000000..eb0b8a0
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at
+new file mode 100644
+index 0000000..0652fd9
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i
+new file mode 100644
+index 0000000..3bd2401
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+new file mode 100644
+index 0000000..888a92d
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+@@ -0,0 +1,2 @@
++6
++0
+\ No newline at end of file
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab
+new file mode 100644
+index 0000000..6890efe
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream
+new file mode 100644
+index 0000000..8fc9f4c
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len
+new file mode 100644
+index 0000000..f6eb835
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at
+new file mode 100644
+index 0000000..87c4282
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i
+new file mode 100644
+index 0000000..bf41439
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab
+new file mode 100644
+index 0000000..7ba8007
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream
+new file mode 100644
+index 0000000..3d5fe7a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len
+new file mode 100644
+index 0000000..fa902fa
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+new file mode 100644
+index 0000000..5f1d157
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i
+new file mode 100644
+index 0000000..b7dc911
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab
+new file mode 100644
+index 0000000..beb7f12
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream
+new file mode 100644
+index 0000000..4baac32
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len
+new file mode 100644
+index 0000000..d6bc86d
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len
+new file mode 100644
+index 0000000..de7eaa9
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at
+new file mode 100644
+index 0000000..2ea38dc
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i
+new file mode 100644
+index 0000000..e69676b
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+new file mode 100644
+index 0000000..e64c939
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+new file mode 100644
+index 0000000..34c8cee
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+new file mode 100644
+index 0000000..0066ee5
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/outputs/aar/react-native-kakao_core-debug.aar b/node_modules/@react-native-kakao/core/android/build/outputs/aar/react-native-kakao_core-debug.aar
+new file mode 100644
+index 0000000..4b1738e
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/outputs/aar/react-native-kakao_core-debug.aar differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@react-native-kakao/core/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..5797830
+--- /dev/null
++++ b/node_modules/@react-native-kakao/core/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,16 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml:1:1-2:12
++INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml:1:1-2:12
++	package
++		INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml
++	xmlns:android
++		ADDED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml:1:11-69
++uses-sdk
++INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml reason: use-sdk injection requested
++INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml
++INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml
++	android:targetSdkVersion
++		INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml
++	android:minSdkVersion
++		INJECTED from /Users/uncertainty/Personal-git/try/ho/node_modules/@react-native-kakao/core/android/src/main/AndroidManifestNew.xml
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@react-native-kakao/core/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..57f5f89
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/META-INF/react-native-kakao_core_debug.kotlin_module b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/META-INF/react-native-kakao_core_debug.kotlin_module
+new file mode 100644
+index 0000000..016c154
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/META-INF/react-native-kakao_core_debug.kotlin_module differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/KakaoCoreSpec.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/KakaoCoreSpec.class
+new file mode 100644
+index 0000000..310dd22
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/KakaoCoreSpec.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$Companion.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$Companion.class
+new file mode 100644
+index 0000000..468b26a
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$Companion.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$initializeKakaoSDK$1.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$initializeKakaoSDK$1.class
+new file mode 100644
+index 0000000..d2ff9fb
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule$initializeKakaoSDK$1.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule.class
+new file mode 100644
+index 0000000..35cb8f9
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCoreModule.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCorePackage.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCorePackage.class
+new file mode 100644
+index 0000000..7205db2
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/RNCKakaoCorePackage.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/DebugEKt.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/DebugEKt.class
+new file mode 100644
+index 0000000..0c05de9
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/DebugEKt.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/KakaoApp.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/KakaoApp.class
+new file mode 100644
+index 0000000..90df84f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/KakaoApp.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoAppNotAvailableException.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoAppNotAvailableException.class
+new file mode 100644
+index 0000000..e585b44
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoAppNotAvailableException.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoException.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoException.class
+new file mode 100644
+index 0000000..564bd7c
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoException.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoResponseNotFoundException.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoResponseNotFoundException.class
+new file mode 100644
+index 0000000..9e70658
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoResponseNotFoundException.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoSdkNotInitializedException.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoSdkNotInitializedException.class
+new file mode 100644
+index 0000000..ae0bb1b
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoSdkNotInitializedException.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUnknownException.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUnknownException.class
+new file mode 100644
+index 0000000..3905279
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUnknownException.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtil.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtil.class
+new file mode 100644
+index 0000000..23ece4f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtil.class differ
+diff --git a/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtilKt.class b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtilKt.class
+new file mode 100644
+index 0000000..9df8d1f
+Binary files /dev/null and b/node_modules/@react-native-kakao/core/android/build/tmp/kotlin-classes/debug/net/mjstudio/rnkakao/core/util/RNCKakaoUtilKt.class differ
+diff --git a/node_modules/@react-native-kakao/core/ios/Util/RNCKakaoError.swift b/node_modules/@react-native-kakao/core/ios/Util/RNCKakaoError.swift
+index ad50545..536e7e7 100644
+--- a/node_modules/@react-native-kakao/core/ios/Util/RNCKakaoError.swift
++++ b/node_modules/@react-native-kakao/core/ios/Util/RNCKakaoError.swift
+@@ -13,19 +13,27 @@ public enum RNCKakaoError: Error, CustomStringConvertible {
+ 
+   public var code: String {
+     switch self {
+-    case .unknown: "Package-Unknown"
+-    case .responseNotFound: "Package-APIResponseNotFound"
+-    case .sdkNotInitialized: "Package-SDKNotInitialized"
+-    case .kakaoAppNotAvailable: "Package-KakaoAppNotAvailable"
++    case .unknown:
++      return "Package-Unknown"
++    case .responseNotFound:
++      return "Package-APIResponseNotFound"
++    case .sdkNotInitialized:
++      return "Package-SDKNotInitialized"
++    case .kakaoAppNotAvailable:
++      return "Package-KakaoAppNotAvailable"
+     }
+   }
+ 
+   public var description: String {
+     switch self {
+-    case let .unknown(message): "Unknown error from package. This can be a bug of react-native-kakao package. message: \(message ?? "None")"
+-    case let .responseNotFound(name): "The API response from Kakao Native SDK missing. name: \(name)"
+-    case .sdkNotInitialized: "The SDK is not initialized from react-native-kakao"
+-    case let .kakaoAppNotAvailable(app): "Kakao application is not available. app: \(app.rawValue)"
++    case let .unknown(message):
++      return "Unknown error from package. This can be a bug of react-native-kakao package. message: \(message ?? "None")"
++    case let .responseNotFound(name):
++      return "The API response from Kakao Native SDK missing. name: \(name)"
++    case .sdkNotInitialized:
++      return "The SDK is not initialized from react-native-kakao"
++    case let .kakaoAppNotAvailable(app):
++      return "Kakao application is not available. app: \(app.rawValue)"
+     }
+   }
+ }

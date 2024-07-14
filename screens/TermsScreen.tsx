@@ -19,6 +19,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 
 import colors from "../styles/colors";
+import { supabase } from "../utils/supabase";
 
 interface TermsScreenProps {
   navigation: RootStackScreenProps<"Terms">["navigation"];
@@ -40,6 +41,34 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
     setAgreeMarketing(newValue);
   };
 
+  const handleSubmit = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.error("Error fetching user:", userError.message);
+      return;
+    }
+
+    if (user) {
+      const { data, error } = await supabase.from("terms_agreement").upsert([
+        {
+          user_id: user.id,
+          service: agreeService,
+          privacy: agreePrivacy,
+          marketing: agreeMarketing,
+        },
+      ]);
+      if (error) {
+        console.error("Error upserting terms agreement:", error.message);
+      } else {
+        navigation.navigate("Profile");
+      }
+    }
+  };
+
   const openBottomSheet = (content: string) => {
     setModalContent(content);
     handleOpenPress();
@@ -49,9 +78,9 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
   const handleClosePress = () => bottomSheetRef.current?.close();
   const handleOpenPress = () => bottomSheetRef.current?.expand();
-  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-  const snapeToIndex = (index: number) =>
-    bottomSheetRef.current?.snapToIndex(index);
+  // const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  // const snapeToIndex = (index: number) =>
+  //   bottomSheetRef.current?.snapToIndex(index);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -63,7 +92,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
     []
   );
 
-  console.log("snapPoints", snapPoints);
+  // console.log("snapPoints", snapPoints);
 
   const renderContent = () => (
     <View style={styles.bottomSheetContent}>
@@ -377,7 +406,8 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
         {/* 다음으로 이동 버튼 */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Profile")}
+          // onPress={() => navigation.navigate("Profile")}
+          onPress={handleSubmit}
         >
           <Text style={styles.buttonText}>다음</Text>
         </TouchableOpacity>

@@ -27,20 +27,44 @@ export default function ({ onLoginSuccess }: AuthProps) {
       await GoogleSignin.hasPlayServices();
       console.log("Play Services available, attempting sign-in...");
       const userInfo = await GoogleSignin.signIn();
-      console.log(JSON.stringify(userInfo, null, 2));
+      const { idToken } = userInfo;
+      console.log("Google login success", JSON.stringify(userInfo, null, 2));
 
-      if (userInfo.idToken) {
+      if (idToken) {
         console.log("Id Token present, attempting Supabase sign-in...");
-        const d = await supabase.auth.signInWithIdToken({
+        const {
+          data: { user, session },
+          error: signError,
+        } = await supabase.auth.signInWithIdToken({
           provider: "google",
-          token: userInfo.idToken,
+          token: idToken,
         });
-        console.log("Supabase sign-in response: ", d);
-        console.log("User: ", d.data.user);
-        console.log("Session: ", d.data.session);
+        console.log("Supabase sign-in response: ");
+        console.log("User: ", user);
+        console.log("Session: ", session);
 
         // 로그인 성공 시 약관 동의 페이지로 이동
-        onLoginSuccess();
+        if (user) {
+          const { id, email } = user;
+          const { data: upsertData, error: upsertError } = await supabase
+            .from("users")
+            .upsert([{ id, email }]);
+
+          // upsertData와 upsertError를 확인하여 로그인 성공 여부를 확인합니다.
+          console.log("User upsert response: ", upsertData);
+
+          if (upsertError) {
+            console.error("Error upserting user:", upsertError.message);
+            console.log(
+              "Full error object:",
+              JSON.stringify(upsertError, null, 2)
+            );
+          } else {
+            console.log("User upsert response: ", upsertData);
+            onLoginSuccess();
+          }
+        }
+        if (signError) console.error("Error signing in:", signError.message);
       } else {
         throw new Error("No Id Token present!");
       }
@@ -71,28 +95,53 @@ export default function ({ onLoginSuccess }: AuthProps) {
   const handleKakaoLogin = async () => {
     try {
       console.log("Kakao Sign-In button pressed");
-      const token = await kakaoLogin();
-      console.log("Kakao login success", token);
+      const userInfo = await kakaoLogin();
+      const { accessToken } = userInfo;
+      console.log("Kakao login success", JSON.stringify(userInfo, null, 2));
 
-      if (token) {
+      if (accessToken) {
         console.log(
           "Kakao login token present, attempting Supabase sign-in..."
         );
-        const { data, error } = await supabase.auth.signInWithIdToken({
+        const { data, error: signError } = await supabase.auth.signInWithOAuth({
           provider: "kakao",
-          token: token.accessToken,
         });
 
-        if (error && error.message !== "Bad ID token") {
-          throw error;
-        }
+        if (signError) throw signError;
 
         console.log("Supabase sign-in response: ", data);
-        console.log("User: ", data.user);
-        console.log("Session: ", data.session);
 
         // 로그인 성공 시 약관 동의 페이지로 이동
-        onLoginSuccess();
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
+
+        if (userError) {
+          console.error("Error fetching user:", userError.message);
+          return;
+        }
+
+        if (user) {
+          const { id, email } = user;
+          const { data: upsertData, error: upsertError } = await supabase
+            .from("users")
+            .upsert([{ id, email }]);
+
+          // upsertData와 upsertError를 확인하여 로그인 성공 여부를 확인합니다.
+          console.log("User upsert response: ", upsertData);
+
+          if (upsertError) {
+            console.error("Error upserting user:", upsertError.message);
+            console.log(
+              "Full error object:",
+              JSON.stringify(upsertError, null, 2)
+            );
+          } else {
+            console.log("User upsert response: ", upsertData);
+            onLoginSuccess();
+          }
+        }
       } else {
         throw new Error("No Kakao login token present!");
       }

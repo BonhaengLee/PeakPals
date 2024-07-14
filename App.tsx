@@ -9,9 +9,10 @@ import { getKeyHashAndroid } from "@react-native-kakao/core";
 import LoginScreen from "./screens/LoginScreen";
 import TermsScreen from "./screens/TermsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import BodyInfoScreen from "./screens/BodyInfoScreen";
-import CenterSearchScreen from "./screens/CenterSearchScreen";
+// import BodyInfoScreen from "./screens/BodyInfoScreen";
+// import CenterSearchScreen from "./screens/CenterSearchScreen";
 import { kakaoNativeAppKey } from "./utils/config";
+import HomeScreen from "./screens/HomeScreen";
 
 initializeKakaoSDK(kakaoNativeAppKey);
 
@@ -39,14 +40,19 @@ export default function App() {
             component={ProfileScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="BodyInfo"
             component={BodyInfoScreen} // 새로운 화면 컴포넌트 추가
             options={{ headerShown: false }}
-          />
-          <Stack.Screen
+          /> */}
+          {/* <Stack.Screen
             name="CenterSearch"
             component={CenterSearchScreen} // 새로운 화면 컴포넌트 추가
+            options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

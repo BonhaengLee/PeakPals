@@ -5,7 +5,4 @@ export const googleWebClientId =
 export const googleIosClientId =
   process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || "";
 
-export const kakaoNativeAppKey =
-  process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY || "";
-
 export const storageUrl = `${supabaseUrl}/storage/v1/object/public`;

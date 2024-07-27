@@ -4,15 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  AppRegistry,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { initializeKakaoSDK } from "@react-native-kakao/core";
-import { getKeyHashAndroid } from "@react-native-kakao/core";
+import { AppRegistry, StyleSheet } from "react-native";
 import { Session } from "@supabase/supabase-js";
 
 import LoginScreen from "./screens/LoginScreen";
@@ -23,12 +15,7 @@ import { supabase } from "./utils/supabase";
 // import CenterSearchScreen from "./screens/CenterSearchScreen";
 import MyPageScreen from "./screens/MyPageScreen";
 
-import { kakaoNativeAppKey } from "./utils/config";
 import colors from "./styles/colors";
-
-initializeKakaoSDK(kakaoNativeAppKey);
-
-getKeyHashAndroid().then(console.log);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

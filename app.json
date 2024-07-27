@@ -35,27 +35,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "@react-native-google-signin/google-signin",
-      "expo-build-properties",
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "extraMavenRepos": [
-              "https://devrepo.kakao.com/nexus/content/groups/public/"
-            ]
-          }
-        }
-      ],
-      [
-        "@react-native-kakao/core",
-        {
-          "nativeAppKey": "{{native app key}}",
-          "android": { "authCodeHandlerActivity": true },
-          "ios": { "handleKakaoOpenUrl": true }
-        }
-      ]
-    ]
+    "plugins": ["@react-native-google-signin/google-signin"]
   }
 }

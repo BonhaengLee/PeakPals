@@ -18,11 +18,13 @@ import BottomSheet, {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import Markdown from "react-native-markdown-display";
 
 import colors from "../styles/colors";
 import { supabase } from "../utils/supabase";
 import { TABLES } from "../constants/supabase";
 import { TERMS_AGREEMENT_LIST } from "../constants/termsAgreement";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface TermsScreenProps {
   navigation: RootStackScreenProps<"Terms">["navigation"];
@@ -35,6 +37,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
   const [agreeMarketing, setAgreeMarketing] = useState(false);
 
   const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleAgreeAll = (newValue: boolean) => {
@@ -115,7 +118,8 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
     }
   };
 
-  const openBottomSheet = (content: string) => {
+  const openBottomSheet = (title: string, content: string) => {
+    setModalTitle(title);
     setModalContent(content);
     handleOpenPress();
   };
@@ -139,21 +143,30 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
   );
 
   // console.log("snapPoints", snapPoints);
-
   const renderContent = () => (
-    <View style={styles.bottomSheetContent}>
-      <Text style={styles.modalText}>{modalContent}</Text>
-      <Button title="닫기" onPress={handleClosePress} />
-    </View>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.header}>
+        <Text style={styles.modalTitle}>{modalTitle}</Text>
+
+        <TouchableOpacity
+          style={styles.closeButtonWrapper}
+          onPress={handleClosePress}
+        >
+          <Feather name="x" size={32} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView>
+        <Markdown style={markdownStyles}>{modalContent}</Markdown>
+      </ScrollView>
+    </ScrollView>
   );
 
   return (
     <BottomSheetModalProvider>
       <View style={styles.container}>
-        {/* 행온 서비스 이용 동의 페이지 */}
         <Text style={styles.title}>서비스 이용 동의</Text>
 
-        {/* 약관 전체 동의 */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
             style={styles.touchableCheckbox}
@@ -169,19 +182,10 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             </View>
             <Text style={styles.label}>약관 전체 동의</Text>
           </TouchableOpacity>
-
-          <Feather
-            style={styles.feather}
-            name="chevron-right"
-            size={24}
-            color="white"
-            onPress={() => openBottomSheet("약관 전체 동의 내용")}
-          />
         </View>
 
         <View style={styles.separator} />
 
-        {/* (필수) 서비스 이용약관 */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
             style={styles.touchableCheckbox}
@@ -203,11 +207,12 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             name="chevron-right"
             size={24}
             color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.SERVICE)}
+            onPress={() =>
+              openBottomSheet("서비스 이용약관", TERMS_AGREEMENT_LIST.SERVICE)
+            }
           />
         </View>
 
-        {/* (필수) 개인정보 처리 방침 */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
             style={styles.touchableCheckbox}
@@ -229,11 +234,15 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             name="chevron-right"
             size={24}
             color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.PRIVACY)}
+            onPress={() =>
+              openBottomSheet(
+                "개인정보 처리 방침",
+                TERMS_AGREEMENT_LIST.PRIVACY
+              )
+            }
           />
         </View>
 
-        {/* (선택) 마케팅 정보 수신 동의 */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
             style={styles.touchableCheckbox}
@@ -255,27 +264,29 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             name="chevron-right"
             size={24}
             color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.MARKETING)}
+            onPress={() =>
+              openBottomSheet(
+                "마케팅 정보 수신 동의",
+                TERMS_AGREEMENT_LIST.MARKETING
+              )
+            }
           />
         </View>
 
-        {/* 다음으로 이동 버튼 */}
-        <TouchableOpacity
-          style={styles.button}
-          // onPress={() => navigation.navigate("Profile")}
-          onPress={handleSubmit}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>다음</Text>
         </TouchableOpacity>
 
         <BottomSheet
           ref={bottomSheetRef}
-          // renderContent={renderContent}
-          // 초기 페이지 로드 시 열려있지 않도록 설정
           index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
           handleIndicatorStyle={{ backgroundColor: "#fff" }}
+          // 최상단, 최하단에 해당하는 배경색 지정
+          backgroundStyle={{
+            backgroundColor: colors.black500,
+          }}
           backdropComponent={renderBackdrop}
         >
           {renderContent()}
@@ -322,12 +333,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     color: colors.white1000,
-    flex: 1, // 텍스트가 남은 공간을 차지하도록 설정
+    flex: 1,
   },
   separator: {
     height: 1,
-    backgroundColor: colors.white1000,
-    marginVertical: 20,
+    backgroundColor: colors.black500,
+    marginBottom: 20,
   },
   button: {
     backgroundColor: colors.primary,
@@ -347,15 +358,42 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     letterSpacing: 0.1,
   },
-  bottomSheetContent: {
-    backgroundColor: "white",
-    padding: 20,
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+  scrollViewContent: {
+    backgroundColor: colors.black500,
+    padding: 16,
   },
-  modalText: {
-    fontSize: 16,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: colors.white900,
+  },
+  markdown: {
+    color: colors.white1000,
     marginBottom: 20,
   },
+  markdownText: {
+    color: colors.white1000,
+  },
+  closeButtonWrapper: {
+    // Feather 아이콘을 수직 중앙 정렬해서 텍스트와 동일한 높이로 맞춤
+    paddingVertical: "auto",
+  },
 });
+
+const markdownStyles = {
+  text: {
+    color: colors.white1000,
+  },
+  bullet_list_icon: {
+    color: colors.white1000,
+  },
+  ordered_list_icon: {
+    color: colors.white1000,
+  },
+};

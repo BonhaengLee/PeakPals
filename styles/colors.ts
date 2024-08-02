@@ -10,4 +10,5 @@ export default {
   gray200: "#7B7F8E",
   gray500: "#B9BCC6",
   white500: "#F7F7F7",
+  black500: "#2B2E39",
 };

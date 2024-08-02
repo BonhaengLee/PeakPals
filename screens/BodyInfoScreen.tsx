@@ -36,14 +36,14 @@ export default function BodyInfoScreen({ navigation }: BodyInfoScreenProps) {
       <TextInput
         style={styles.input}
         placeholder="키(cm)"
-        placeholderTextColor={colors.white}
+        placeholderTextColor={colors.white1000}
         value={height}
         onChangeText={setHeight}
       />
       <TextInput
         style={styles.input}
         placeholder="몸무게(kg)"
-        placeholderTextColor={colors.white}
+        placeholderTextColor={colors.white1000}
         value={weight}
         onChangeText={setWeight}
       />
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 24,
-    color: colors.white,
+    color: colors.white1000,
     alignSelf: "flex-start",
     marginBottom: 20,
   },
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    color: colors.white,
+    color: colors.white1000,
     marginTop: 40,
   },
   subtitle: {
     fontSize: 16,
-    color: colors.white,
+    color: colors.white1000,
     textAlign: "center",
     marginVertical: 20,
   },
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkGray,
     borderRadius: 10,
     marginVertical: 10,
-    color: colors.white,
+    color: colors.white1000,
   },
   button: {
     backgroundColor: colors.primary,

@@ -15,13 +15,15 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       style={styles.background}
     >
       <View style={styles.container}>
-        {/* PeakPals 로그인 페이지 */}
-        <Image
-          source={require("../assets/images/logo.png")}
-          style={styles.logoImage}
-        />
-        {/* 로고 타이틀 */}
-        <Text style={styles.logoTitle}>클라이밍에 모든것, PeakPals</Text>
+        <View style={styles.content}>
+          {/* PeakPals 로그인 페이지 */}
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={styles.logoImage}
+          />
+          {/* 로고 타이틀 */}
+          <Text style={styles.logoTitle}>클라이밍에 모든것, PeakPals</Text>
+        </View>
 
         <Auth onLoginSuccess={() => navigation.navigate("Terms")} />
         <StatusBar style="auto" />
@@ -39,8 +41,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  content: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 32,
   },
   logoImage: {
     width: 279,

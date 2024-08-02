@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Local에서는 주석 처리
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  nickname   String
+  avatar_url String?
+  created_at DateTime @default(now())
+  terms      TermsAgreement?
+}
+
+model TermsAgreement {
+  id         String   @id @default(uuid())  // UUID 타입으로 변경
+  user_id    String   @unique
+  service    Boolean
+  privacy    Boolean
+  marketing  Boolean
+  created_at DateTime @default(now())
+
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}

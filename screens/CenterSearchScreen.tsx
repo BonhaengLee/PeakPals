@@ -35,7 +35,7 @@ export default function CenterSearchScreen({
         <TextInput
           style={styles.input}
           placeholder="센터 이름 또는 위치 검색"
-          placeholderTextColor={colors.white}
+          placeholderTextColor={colors.white1000}
         />
       </View>
       <TouchableOpacity
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 24,
-    color: colors.white,
+    color: colors.white1000,
     alignSelf: "flex-start",
     marginBottom: 20,
   },
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    color: colors.white,
+    color: colors.white1000,
     marginTop: 40,
   },
   subtitle: {
     fontSize: 16,
-    color: colors.white,
+    color: colors.white1000,
     textAlign: "center",
     marginVertical: 20,
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   input: {
-    color: colors.white,
+    color: colors.white1000,
   },
   button: {
     backgroundColor: colors.primary,

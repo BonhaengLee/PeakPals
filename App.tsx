@@ -14,8 +14,12 @@ import ProfileScreen from "./screens/ProfileScreen";
 // import BodyInfoScreen from "./screens/BodyInfoScreen";
 import { kakaoNativeAppKey } from "./utils/config";
 import HomeScreen from "./screens/HomeScreen";
+<<<<<<< HEAD
 import { supabase } from "./utils/supabase";
 // import CenterSearchScreen from "./screens/CenterSearchScreen";
+=======
+import MyPageScreen from "./screens/MyPageScreen";
+>>>>>>> 5f687b6 (:lipstick: 마이페이지 UI WIP)
 
 initializeKakaoSDK(kakaoNativeAppKey);
 

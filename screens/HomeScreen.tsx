@@ -21,8 +21,15 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data, error: userError } = await supabase.auth.getUser();
+      // 세션을 새로 고칩니다.
+      const { error: sessionError } = await supabase.auth.refreshSession();
+      if (sessionError) {
+        console.error("Error refreshing session:", sessionError.message);
+        navigation.navigate("Login");
+        return;
+      }
 
+      const { data, error: userError } = await supabase.auth.getUser();
       if (userError) {
         console.error("Error fetching user:", userError.message);
         return;

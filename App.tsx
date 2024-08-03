@@ -4,15 +4,23 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { AppRegistry, StyleSheet } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Text,
+} from "react-native";
 import { Session } from "@supabase/supabase-js";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import LoginScreen from "./screens/LoginScreen";
 import TermsScreen from "./screens/TermsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import { supabase } from "./utils/supabase";
-// import CenterSearchScreen from "./screens/CenterSearchScreen";
 import MyPageScreen from "./screens/MyPageScreen";
 
 import colors from "./styles/colors";
@@ -23,20 +31,90 @@ const Tab = createBottomTabNavigator();
 function MainTabs() {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabBarLabel,
-      }}
+        tabBarItemStyle: { marginHorizontal: 8 }, // 각 버튼 사이에 16px 간격 유지
+        tabBarIcon: ({ focused }) => {
+          if (route.name === "센터 찾기") {
+            return (
+              <View
+                style={[
+                  styles.customTabButton,
+                  focused && styles.customTabButtonFocused,
+                ]}
+              >
+                <MaterialIcons
+                  name="location-searching"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+                <Text
+                  style={[
+                    styles.customTabButtonText,
+                    focused && styles.customTabButtonTextFocused,
+                  ]}
+                >
+                  센터 찾기
+                </Text>
+              </View>
+            );
+          }
+
+          if (route.name === "마이페이지") {
+            return (
+              <View
+                style={[
+                  styles.customTabButton,
+                  focused && styles.customTabButtonFocused,
+                ]}
+              >
+                <Feather
+                  name="user"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+                <Text
+                  style={[
+                    styles.customTabButtonText,
+                    focused && styles.customTabButtonTextFocused,
+                  ]}
+                >
+                  마이페이지
+                </Text>
+              </View>
+            );
+          }
+        },
+        tabBarLabel: () => null,
+      })}
     >
-      <Tab.Screen name="센터 찾기" component={HomeScreen} />
-      {/* <Tab.Screen name={"Peak-Pals"} component={MyPageScreen} /> */}
       <Tab.Screen
-        name={"Peak-Pals"}
+        name="센터 찾기"
+        component={HomeScreen}
+        options={{
+          header: () => (
+            <View style={styles.headerContainer}>
+              <TouchableOpacity style={styles.headerIconLeft}>
+                <MaterialIcons name="manage-search" size={24} color="white" />
+              </TouchableOpacity>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="센터명 및 위치 검색"
+                placeholderTextColor="#AAAAAA"
+              />
+              <TouchableOpacity style={styles.headerIconRight}>
+                <Feather name="user" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="마이페이지"
         component={MyPageScreen}
         options={{
           headerStyle: {
             backgroundColor: "#000000", // 헤더의 배경색 설정
-
             // borderBottom 표시
             borderBottomColor: colors.black600,
             shadowColor: "transparent",
@@ -48,7 +126,7 @@ function MainTabs() {
             fontWeight: "bold",
           },
           headerTitleAlign: "left",
-          headerTitle: "Peak-Pals",
+          headerTitle: "마이페이지",
         }}
       />
     </Tab.Navigator>
@@ -138,11 +216,49 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#333333",
     height: 60,
+    paddingHorizontal: 8,
   },
-  tabBarLabel: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "bold",
+  customTabButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingVertical: 10,
+    borderRadius: 999,
+    marginHorizontal: 8,
+  },
+  customTabButtonFocused: {
+    backgroundColor: "#D0FF00",
+  },
+  customTabButtonText: {
+    color: colors.gray200,
+    fontSize: 14,
+    marginLeft: 4,
+    lineHeight: 24,
+  },
+  customTabButtonTextFocused: {
+    color: "black",
+  },
+  headerIconLeft: {
+    marginLeft: 16,
+  },
+  headerIconRight: {
+    marginRight: 16,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#000",
+    paddingVertical: 10,
+  },
+  searchInput: {
+    flex: 1,
+    marginHorizontal: 10,
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: "#333",
+    color: "#FFF",
   },
 });
 

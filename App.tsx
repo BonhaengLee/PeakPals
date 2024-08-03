@@ -13,8 +13,8 @@ import {
   Text,
 } from "react-native";
 import { Session } from "@supabase/supabase-js";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { MaterialIcons, SimpleLineIcons, Feather } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import LoginScreen from "./screens/LoginScreen";
 import TermsScreen from "./screens/TermsScreen";
@@ -93,19 +93,19 @@ function MainTabs() {
         component={HomeScreen}
         options={{
           header: () => (
-            <View style={styles.headerContainer}>
-              <TouchableOpacity style={styles.headerIconLeft}>
-                <MaterialIcons name="manage-search" size={24} color="white" />
-              </TouchableOpacity>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="센터명 및 위치 검색"
-                placeholderTextColor="#AAAAAA"
-              />
-              <TouchableOpacity style={styles.headerIconRight}>
-                <Feather name="user" size={24} color="white" />
-              </TouchableOpacity>
-            </View>
+            // ! : react-native-safe-area-context의 SafeAreaView를 사용하여 ios 상단바를 고려한 디자인
+            <SafeAreaView style={styles.headerContainer}>
+              <View style={styles.searchInputContainer}>
+                <TextInput
+                  style={styles.searchInput}
+                  placeholder="센터명 및 위치 검색"
+                  placeholderTextColor={colors.black200}
+                />
+                <TouchableOpacity style={styles.searchIcon}>
+                  <SimpleLineIcons name="magnifier" size={24} color="#B6B6B6" />
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
           ),
         }}
       />
@@ -239,26 +239,31 @@ const styles = StyleSheet.create({
   customTabButtonTextFocused: {
     color: "black",
   },
-  headerIconLeft: {
-    marginLeft: 16,
-  },
-  headerIconRight: {
-    marginRight: 16,
-  },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#000",
-    paddingVertical: 10,
+    backgroundColor: "transparent",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
+  searchInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.white1000,
+    borderRadius: 24,
+    flex: 1,
+    marginHorizontal: 10,
   },
   searchInput: {
     flex: 1,
-    marginHorizontal: 10,
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: "#333",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
     color: "#FFF",
+  },
+  searchIcon: {
+    paddingHorizontal: 16,
   },
 });
 

@@ -1,21 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import {
-  Button,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import CheckBox from "expo-checkbox";
 import { RootStackScreenProps } from "../navigation/types";
 import { Feather } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import Markdown from "react-native-markdown-display";

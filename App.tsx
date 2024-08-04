@@ -46,7 +46,7 @@ function MainTabs() {
                 <MaterialIcons
                   name="location-searching"
                   size={24}
-                  color={focused ? "black" : "gray"}
+                  color={focused ? colors.black1000 : colors.gray700}
                 />
                 <Text
                   style={[
@@ -71,7 +71,7 @@ function MainTabs() {
                 <Feather
                   name="user"
                   size={24}
-                  color={focused ? "black" : "gray"}
+                  color={focused ? colors.black1000 : colors.gray700}
                 />
                 <Text
                   style={[
@@ -102,7 +102,11 @@ function MainTabs() {
                   placeholderTextColor={colors.black200}
                 />
                 <TouchableOpacity style={styles.searchIcon}>
-                  <SimpleLineIcons name="magnifier" size={24} color="#B6B6B6" />
+                  <SimpleLineIcons
+                    name="magnifier"
+                    size={24}
+                    color={colors.gray400}
+                  />
                 </TouchableOpacity>
               </View>
             </SafeAreaView>
@@ -114,13 +118,13 @@ function MainTabs() {
         component={MyPageScreen}
         options={{
           headerStyle: {
-            backgroundColor: "#000000", // 헤더의 배경색 설정
+            backgroundColor: colors.black1000, // 헤더의 배경색 설정
             // borderBottom 표시
-            borderBottomColor: colors.black600,
-            shadowColor: "transparent",
+            borderBottomColor: colors.black500,
+            shadowColor: colors.transparent,
             borderBottomWidth: 1,
           },
-          headerTintColor: "#FFFFFF", // 헤더 내 텍스트와 아이콘 색상 설정
+          headerTintColor: colors.white1000, // 헤더 내 텍스트와 아이콘 색상 설정
           headerTitleStyle: {
             fontSize: 16,
             fontWeight: "bold",
@@ -212,9 +216,9 @@ function HomeStack() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: "#000000",
+    backgroundColor: colors.black1000,
     borderTopWidth: 1,
-    borderTopColor: "#333333",
+    borderTopColor: colors.black600,
     height: 60,
     paddingHorizontal: 8,
   },
@@ -228,22 +232,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   customTabButtonFocused: {
-    backgroundColor: "#D0FF00",
+    backgroundColor: colors.primary,
   },
   customTabButtonText: {
-    color: colors.gray200,
+    color: colors.gray700,
     fontSize: 14,
     marginLeft: 4,
     lineHeight: 24,
   },
   customTabButtonTextFocused: {
-    color: "black",
+    color: colors.black1000,
   },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "transparent",
+    backgroundColor: colors.transparent,
     paddingVertical: 16,
     paddingHorizontal: 16,
   },
@@ -260,7 +264,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: "#FFF",
+    color: colors.white1000,
   },
   searchIcon: {
     paddingHorizontal: 16,

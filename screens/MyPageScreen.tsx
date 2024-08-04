@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import colors from "../styles/colors";
 import { DayProps } from "react-native-calendars/src/calendar/day";
-import { ScrollView } from "react-native-gesture-handler";
+import { supabase } from "../utils/supabase";
+import { STORAGE_PATHS, TABLES, USER_FIELDS } from "../constants/supabase";
 
 const MyPageScreen = () => {
   const [profile, setProfile] = useState({
@@ -19,6 +27,53 @@ const MyPageScreen = () => {
   const [displayedMonth, setDisplayedMonth] = useState(new Date());
 
   const completedDates = ["2024-03-10", "2024-03-24"];
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.error("Error fetching user:", userError.message);
+        return;
+      }
+
+      const userId = data?.user.id;
+      if (!userId) {
+        console.error("No user found");
+        return;
+      }
+
+      const { data: profileData, error: profileError } = await supabase
+        .from(TABLES.USER)
+        .select("*")
+        .eq(USER_FIELDS.ID, userId);
+
+      if (profileError) {
+        console.error("Error fetching profile:", profileError.message);
+      } else if (profileData && profileData.length > 0) {
+        const profileInfo = profileData[0];
+        const { data: signedUrlData, error: signedUrlError } =
+          await supabase.storage
+            .from(STORAGE_PATHS.AVATARS)
+            .createSignedUrl(profileInfo.avatar_url, 60);
+
+        if (signedUrlError) {
+          console.error("Error creating signed URL:", signedUrlError.message);
+        } else {
+          setProfile({
+            name: profileInfo.nickname,
+            message: "안녕하세요! 오늘도 화이팅!",
+            profileImage: signedUrlData.signedUrl,
+            badgeCount: 27,
+            hangonCount: 56,
+          });
+        }
+      } else {
+        console.error("No profile found");
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   useEffect(() => {
     const today = new Date();
@@ -177,10 +232,10 @@ const MyPageScreen = () => {
             "2024-03-10": {
               customStyles: {
                 container: {
-                  backgroundColor: "#CDE569",
+                  backgroundColor: colors.primary,
                 },
                 text: {
-                  color: "#000000",
+                  color: colors.black1000,
                   fontWeight: "bold",
                 },
               },
@@ -188,22 +243,22 @@ const MyPageScreen = () => {
             "2024-03-24": {
               customStyles: {
                 container: {
-                  backgroundColor: "#CDE569",
+                  backgroundColor: colors.primary,
                 },
                 text: {
-                  color: "#000000",
+                  color: colors.black1000,
                   fontWeight: "bold",
                 },
               },
             },
           }}
           theme={{
-            calendarBackground: colors.black600,
-            textSectionTitleColor: "#F7F7F7",
-            todayTextColor: "#F7F7F7",
-            dayTextColor: "#F7F7F7",
-            selectedDayBackgroundColor: colors.black600,
-            monthTextColor: "#F7F7F7",
+            calendarBackground: colors.black500,
+            textSectionTitleColor: colors.white900,
+            todayTextColor: colors.white900,
+            dayTextColor: colors.white900,
+            selectedDayBackgroundColor: colors.black500,
+            monthTextColor: colors.white900,
             indicatorColor: colors.gray500,
             arrowColor: "transparent",
           }}
@@ -223,12 +278,12 @@ const MyPageScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: colors.black1000,
     padding: 16,
     paddingBottom: 60,
   },
   header: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "left",
@@ -245,14 +300,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#dddddd",
+    backgroundColor: colors.gray300,
   },
   profileTextSection: {
     flex: 1,
   },
   name: {
     fontSize: 20,
-    color: "#FFFFFF",
+    color: colors.white1000,
     marginBottom: 8,
   },
   message: {
@@ -261,25 +316,25 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   profileButton: {
-    backgroundColor: "#CDDC39",
+    backgroundColor: colors.primary,
     borderRadius: 20,
     paddingVertical: 8,
     justifyContent: "center",
   },
   profileButtonText: {
-    color: "#000000",
+    color: colors.black1000,
     fontWeight: "bold",
     textAlign: "center",
   },
 
   divider: {
-    borderBottomColor: "#333333",
+    borderBottomColor: colors.black600,
     borderBottomWidth: 2,
     marginVertical: 20,
   },
 
   statsSection: {
-    backgroundColor: colors.black600,
+    backgroundColor: colors.black500,
     paddingHorizontal: 16,
     paddingVertical: 16,
     marginBottom: 20,
@@ -292,16 +347,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   statsSectionHeaderText: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 16,
     fontWeight: "bold",
   },
   arrowText: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 18,
   },
   statsSectionSubHeader: {
-    color: "#AAAAAA",
+    color: colors.gray600,
     fontSize: 12,
     marginBottom: 24,
   },
@@ -314,7 +369,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     // alignItems: "center"가 들어가면 텍스트가 아래로 눌림
     justifyContent: "space-between",
-    backgroundColor: colors.gray200,
+    backgroundColor: colors.gray700,
     padding: 10,
     borderRadius: 16,
     flex: 1,
@@ -322,12 +377,12 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: 16,
     fontWeight: "normal",
-    color: colors.white500,
+    color: colors.white900,
   },
   statValue: {
     fontSize: 20,
     fontWeight: "bold",
-    color: colors.white500,
+    color: colors.white900,
   },
 
   calendar: {},
@@ -346,15 +401,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray500,
   },
   completedDay: {
-    backgroundColor: "#CDE569",
+    backgroundColor: colors.primary,
     borderRadius: 8,
   },
   completedDayText: {
-    color: "#000000",
+    color: colors.black1000,
     fontWeight: "bold",
   },
   dayText: {
-    color: "#F7F7F7",
+    color: colors.white900,
   },
 
   monthTextContainer: {
@@ -363,7 +418,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   monthText: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 18,
     fontWeight: "bold",
   },
@@ -374,7 +429,7 @@ const styles = StyleSheet.create({
   },
 
   todayButton: {
-    backgroundColor: "#CDE569",
+    backgroundColor: colors.primary,
     borderRadius: 999,
     marginLeft: 10,
     paddingVertical: 8,
@@ -382,7 +437,7 @@ const styles = StyleSheet.create({
     height: 36,
   },
   todayButtonText: {
-    color: "#000000",
+    color: colors.black1000,
     fontWeight: "bold",
     fontSize: 14,
   },
@@ -392,7 +447,7 @@ const styles = StyleSheet.create({
   },
 
   calendarContainer: {
-    backgroundColor: colors.black600,
+    backgroundColor: colors.black500,
     borderRadius: 24,
     padding: 16,
     marginBottom: 60,
@@ -406,7 +461,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   month: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 18,
     fontWeight: "bold",
   },
@@ -417,7 +472,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 21,
   },
   dayName: {
-    color: "#FFFFFF",
+    color: colors.white1000,
     fontSize: 14,
   },
   moveButtonContainer: {

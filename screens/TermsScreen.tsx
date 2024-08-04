@@ -142,7 +142,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
           style={styles.closeButtonWrapper}
           onPress={handleClosePress}
         >
-          <Feather name="x" size={32} color="white" />
+          <Feather name="x" size={32} color={colors.white1000} />
         </TouchableOpacity>
       </View>
 
@@ -196,7 +196,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             style={styles.feather}
             name="chevron-right"
             size={24}
-            color="white"
+            color={colors.white1000}
             onPress={() =>
               openBottomSheet("서비스 이용약관", TERMS_AGREEMENT_LIST.SERVICE)
             }
@@ -223,7 +223,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             style={styles.feather}
             name="chevron-right"
             size={24}
-            color="white"
+            color={colors.white1000}
             onPress={() =>
               openBottomSheet(
                 "개인정보 처리 방침",
@@ -253,7 +253,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
             style={styles.feather}
             name="chevron-right"
             size={24}
-            color="white"
+            color={colors.white1000}
             onPress={() =>
               openBottomSheet(
                 "마케팅 정보 수신 동의",
@@ -272,7 +272,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
           index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
-          handleIndicatorStyle={{ backgroundColor: "#fff" }}
+          handleIndicatorStyle={{ backgroundColor: colors.white1000 }}
           // 최상단, 최하단에 해당하는 배경색 지정
           backgroundStyle={{
             backgroundColor: colors.black500,

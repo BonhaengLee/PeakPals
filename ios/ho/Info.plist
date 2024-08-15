@@ -3,6 +3,9 @@
 <plist version="1.0">
   <dict>
     <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <!-- 여기에 필요한 URL 스킴을 추가할 수 있습니다. -->
+    </array>
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>

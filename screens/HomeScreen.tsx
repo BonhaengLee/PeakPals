@@ -1,98 +1,105 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+  View,
+  Text,
+} from "react-native";
+import Geolocation from "react-native-geolocation-service";
+import WebView from "react-native-webview";
 
 import { RootStackScreenProps } from "../navigation/types";
-import colors from "../styles/colors";
-import { supabase } from "../utils/supabase";
-import { STORAGE_PATHS, TABLES, USER_FIELDS } from "../constants/supabase";
 
 interface HomeScreenProps {
   navigation: RootStackScreenProps<"Home">["navigation"];
 }
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const [userProfile, setUserProfile] = useState<{
-    id: string;
-    nickname: string;
-    avatar_url: string;
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
   } | null>(null);
-
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [locationPermission, setLocationPermission] = useState<boolean>(false);
+  const [webViewRef, setWebViewRef] = useState<WebView | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const { data, error: userError } = await supabase.auth.getUser();
-
-      if (userError) {
-        console.error("Error fetching user:", userError.message);
-        return;
-      }
-
-      const user = data?.user;
-      if (!user) {
-        console.error("No user found");
-        return;
-      }
-
-      const { data: profileData, error } = await supabase
-        .from(TABLES.USER)
-        .select("*")
-        .eq(USER_FIELDS.ID, user.id);
-
-      if (error) {
-        console.error("Error fetching profile:", error.message);
-      } else if (profileData && profileData.length > 0) {
-        setUserProfile(profileData[0]);
-
-        const { data } = await supabase.storage
-          .from(STORAGE_PATHS.AVATARS)
-          .createSignedUrl(profileData[0].avatar_url, 60); // URL valid for 60 seconds
-        console.log(data?.signedUrl);
-
-        setAvatarUrl(data?.signedUrl || null);
+    const requestLocationPermission = async () => {
+      if (Platform.OS === "android") {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          setLocationPermission(true);
+        } else {
+          Alert.alert(
+            "Permission Denied",
+            "Location permission is required to use this feature."
+          );
+        }
       } else {
-        console.error("No profile found");
+        // iOS에서는 위치 서비스가 활성화되어 있는지 확인합니다.
+        Geolocation.requestAuthorization("whenInUse").then((status) => {
+          if (status === "granted") {
+            setLocationPermission(true);
+          } else {
+            Alert.alert(
+              "Permission Denied",
+              "Location permission is required to use this feature."
+            );
+          }
+        });
       }
     };
 
-    fetchProfile();
+    requestLocationPermission();
   }, []);
 
-  console.log("home", avatarUrl);
+  useEffect(() => {
+    if (locationPermission && webViewRef) {
+      const watchId = Geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+          if (webViewRef) {
+            webViewRef.postMessage(JSON.stringify({ latitude, longitude }));
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+        },
+        { enableHighAccuracy: true, distanceFilter: 0, interval: 5000 }
+      );
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      Alert.alert("Error", error.message);
-    } else {
-      navigation.navigate("Login");
+      return () => {
+        if (watchId !== null) {
+          Geolocation.clearWatch(watchId);
+        }
+      };
     }
-  };
+  }, [locationPermission, webViewRef]);
 
-  if (!userProfile) {
+  if (!locationPermission) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>
+          Requesting location permission...
+        </Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>회원가입을 축하합니다!</Text>
-      <Text style={styles.subtitle}>{userProfile.nickname}</Text>
-      {avatarUrl ? (
-        <Image
-          source={{
-            uri: avatarUrl,
-          }}
-          style={styles.avatar}
-          onError={() => console.error("Failed to load image:", avatarUrl)}
-        />
-      ) : (
-        <View style={styles.avatarPlaceholder} />
-      )}
-      <Button title="Logout" onPress={handleLogout} />
+      <WebView
+        ref={(ref) => setWebViewRef(ref)}
+        source={{ uri: "https://your-webview-url.com" }}
+        onMessage={(event) => {
+          const message = JSON.parse(event.nativeEvent.data);
+          console.log("Message received from WebView:", message);
+        }}
+      />
     </View>
   );
 }
@@ -100,29 +107,15 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white1000,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
-  subtitle: { fontSize: 18, color: colors.darkGray, marginBottom: 20 },
-  avatar: { width: 100, height: 100, borderRadius: 50, marginBottom: 20 },
-  avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: colors.lightGray,
-    marginBottom: 20,
+    backgroundColor: "white",
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: colors.white1000,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     fontSize: 18,
-    color: colors.darkGray,
+    color: "darkgray",
   },
 });

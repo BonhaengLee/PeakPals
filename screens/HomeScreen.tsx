@@ -6,11 +6,13 @@ import {
   StyleSheet,
   View,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import WebView from "react-native-webview";
 
-import { RootStackScreenProps } from "../navigation/types";
+import { RootStackScreenProps, ScreenNames } from "../navigation/types";
+import { useSessionAndProfile } from "../hooks/useSessionAndProfile";
 
 interface HomeScreenProps {
   navigation: RootStackScreenProps<"Home">["navigation"];
@@ -21,35 +23,48 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [locationPermission, setLocationPermission] = useState<boolean>(false);
+  const [locationPermission, setLocationPermission] = useState<boolean | null>(
+    null
+  );
   const [webViewRef, setWebViewRef] = useState<WebView | null>(null);
+
+  useSessionAndProfile({
+    setInitialRoute: (routeName: ScreenNames) => {
+      navigation.navigate(routeName as any);
+    },
+  });
 
   useEffect(() => {
     const requestLocationPermission = async () => {
-      if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          setLocationPermission(true);
-        } else {
-          Alert.alert(
-            "Permission Denied",
-            "Location permission is required to use this feature."
+      try {
+        if (Platform.OS === "android") {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
           );
-        }
-      } else {
-        // iOS에서는 위치 서비스가 활성화되어 있는지 확인합니다.
-        Geolocation.requestAuthorization("whenInUse").then((status) => {
-          if (status === "granted") {
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             setLocationPermission(true);
           } else {
+            setLocationPermission(false);
             Alert.alert(
               "Permission Denied",
               "Location permission is required to use this feature."
             );
           }
-        });
+        } else {
+          const status = await Geolocation.requestAuthorization("whenInUse");
+          if (status === "granted") {
+            setLocationPermission(true);
+          } else {
+            setLocationPermission(false);
+            Alert.alert(
+              "Permission Denied",
+              "Location permission is required to use this feature."
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Failed to request location permission:", error);
+        setLocationPermission(false);
       }
     };
 
@@ -57,7 +72,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   }, []);
 
   useEffect(() => {
-    if (locationPermission && webViewRef) {
+    if (locationPermission === true && webViewRef) {
       const watchId = Geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -80,11 +95,23 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     }
   }, [locationPermission, webViewRef]);
 
-  if (!locationPermission) {
+  if (locationPermission === null) {
     return (
       <View style={styles.loadingContainer}>
         <Text style={styles.loadingText}>
           Requesting location permission...
+        </Text>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
+  }
+
+  if (locationPermission === false) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>
+          Location permission denied. Please enable location permission in the
+          settings.
         </Text>
       </View>
     );
@@ -117,5 +144,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     color: "darkgray",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });

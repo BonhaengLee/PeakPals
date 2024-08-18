@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import colors from "../styles/colors";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { ScrollView } from "react-native-gesture-handler";
+import { supabase } from "../utils/supabase"; // supabase import 추가
+import { STORAGE_PATHS, TABLES, USER_FIELDS } from "../constants/supabase";
 
 const MyPageScreen = () => {
   const [profile, setProfile] = useState({
-    name: "Abctest님",
+    name: "",
     message: "안녕하세요! 오늘도 화이팅!",
-    profileImage: "link_to_profile_image",
-    badgeCount: 27,
-    hangonCount: 56,
+    profileImage: "",
+    badgeCount: 0,
+    hangonCount: 0,
   });
 
   const [currentDate, setCurrentDate] = useState("");
@@ -25,6 +27,54 @@ const MyPageScreen = () => {
     const formattedDate = today.toISOString().split("T")[0];
     setCurrentDate(formattedDate);
     setTodayDate(formattedDate);
+
+    const fetchProfile = async () => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError) {
+        console.error("Error fetching user:", userError.message);
+        return;
+      }
+
+      const user = userData?.user;
+      if (!user) {
+        console.error("No user found");
+        return;
+      }
+
+      const { data: profileData, error: profileError } = await supabase
+        .from(TABLES.USER)
+        .select("*")
+        .eq(USER_FIELDS.ID, user.id);
+
+      console.log(profileData);
+
+      if (profileError) {
+        console.error("Error fetching profile:", profileError.message);
+      } else if (profileData && profileData.length > 0) {
+        const profile = profileData[0]; // 첫 번째 결과만 사용
+        console.log(profile);
+
+        const { data: avatarData, error: avatarError } = await supabase.storage
+          .from(STORAGE_PATHS.AVATARS)
+          .createSignedUrl(profile.avatar_url, 60);
+
+        if (avatarError) {
+          console.error("Error fetching avatar URL:", avatarError.message);
+        }
+
+        setProfile({
+          name: `${profile.nickname}님`,
+          message: profile.message,
+          profileImage: avatarData?.signedUrl || "",
+          badgeCount: profile.badge_count || 0,
+          hangonCount: profile.hangon_count || 0,
+        });
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   const renderCustomDay = (day: string & DateData) => {
@@ -48,17 +98,19 @@ const MyPageScreen = () => {
   };
 
   const handlePrevMonth = () => {
-    const newDate = new Date(
-      displayedMonth.setMonth(displayedMonth.getMonth() - 1)
-    );
+    const newDate = new Date(displayedMonth);
+    newDate.setMonth(newDate.getMonth() - 1);
     setDisplayedMonth(newDate);
+
+    console.log("Move to previous month", newDate.getMonth() - 1);
   };
 
   const handleNextMonth = () => {
-    const newDate = new Date(
-      displayedMonth.setMonth(displayedMonth.getMonth() + 1)
-    );
+    const newDate = new Date(displayedMonth);
+    newDate.setMonth(newDate.getMonth() + 1);
     setDisplayedMonth(newDate);
+
+    console.log("Move to next month", newDate.getMonth() + 1);
   };
 
   const handleToday = () => {
@@ -73,28 +125,31 @@ const MyPageScreen = () => {
 
   const WEEKS = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const [date, setDate] = useState(new Date());
-
   return (
     <ScrollView style={styles.container}>
-      {/* <Text style={styles.header}>Peak-Pals</Text> */}
       <View style={styles.profileSection}>
         <Image
           source={{ uri: profile.profileImage }}
           style={styles.profileImage}
         />
-
         <View style={styles.profileTextSection}>
           <Text style={styles.name}>{profile.name}</Text>
           <Text style={styles.message}>{profile.message}</Text>
-
-          <TouchableOpacity style={styles.profileButton}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.profileButton,
+              pressed && { opacity: 0.7 },
+            ]}
+          >
             <Text style={styles.profileButtonText}>프로필 변경</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       <View style={styles.divider}></View>
-      <TouchableOpacity onPress={handleMove}>
+      <Pressable
+        onPress={handleMove}
+        style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+      >
         <View style={styles.statsSection}>
           <View style={styles.statsSectionHeader}>
             <Text style={styles.statsSectionHeaderText}>
@@ -102,62 +157,56 @@ const MyPageScreen = () => {
             </Text>
             <Text style={styles.arrowText}>{">"}</Text>
           </View>
-
           <Text style={styles.statsSectionSubHeader}>
             저번달보다 운동량이 6번 늘었어요
           </Text>
-
           <View style={styles.statItemContainer}>
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>센터 방문</Text>
-
               <Text style={styles.statValue}>{profile.badgeCount}</Text>
             </View>
-
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>완등</Text>
-
               <Text style={styles.statValue}>{profile.hangonCount}</Text>
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-
+      </Pressable>
       <View style={styles.calendarContainer}>
-        {/* 캘린더 버튼 위치가 고정이라서 상단에 Custom Header 새로 만듦 */}
         <View style={styles.calendarHeader}>
           <View style={styles.monthTextContainer}>
             <Text style={styles.monthText}>
               {displayedMonth.getFullYear()}년 {displayedMonth.getMonth() + 1}월
             </Text>
-
-            <TouchableOpacity onPress={handleToday} style={styles.todayButton}>
+            <Pressable
+              onPress={handleToday}
+              style={({ pressed }) => [
+                styles.todayButton,
+                pressed && { opacity: 0.7 },
+              ]}
+            >
               <Text style={styles.todayButtonText}>오늘</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
-
           <View style={styles.moveButtonContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                setDate(new Date(date.setMonth(date.getMonth() - 1)))
-              }
+            <Pressable
+              onPress={handlePrevMonth}
+              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
             >
               <Image
                 source={require("../assets/images/my-page/white-left-arrow.png")}
               />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setDate(new Date(date.setMonth(date.getMonth() + 1)));
-              }}
+            </Pressable>
+            <Pressable
+              onPress={handleNextMonth}
+              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
             >
               <Image
                 source={require("../assets/images/my-page/gray-right-arrow.png")}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
-
         <View style={styles.dayHeader}>
           {WEEKS.map((day) => (
             <View key={day}>
@@ -165,10 +214,9 @@ const MyPageScreen = () => {
             </View>
           ))}
         </View>
-
         <Calendar
           key={displayedMonth.toISOString().split("T")[0]}
-          current={currentDate}
+          current={displayedMonth.toISOString().split("T")[0]} // currentDate 대신 displayedMonth 사용
           markedDates={{
             [currentDate]: {
               selected: true,
@@ -263,13 +311,16 @@ const styles = StyleSheet.create({
   profileButton: {
     backgroundColor: "#CDDC39",
     borderRadius: 20,
-    paddingVertical: 8,
+    paddingHorizontal: 16, // 좌우 padding 추가
+    height: 40, // 버튼 높이 고정
     justifyContent: "center",
+    alignItems: "center",
   },
   profileButtonText: {
     color: "#000000",
     fontWeight: "bold",
     textAlign: "center",
+    lineHeight: 24, // 텍스트의 높이에 맞춘 lineHeight 설정
   },
 
   divider: {
@@ -312,7 +363,6 @@ const styles = StyleSheet.create({
   },
   statItem: {
     flexDirection: "row",
-    // alignItems: "center"가 들어가면 텍스트가 아래로 눌림
     justifyContent: "space-between",
     backgroundColor: colors.gray200,
     padding: 10,
@@ -380,24 +430,26 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     height: 36,
+    justifyContent: "center",
+    alignItems: "center",
   },
   todayButtonText: {
     color: "#000000",
     fontWeight: "bold",
     fontSize: 14,
+    textAlign: "center",
+    lineHeight: 20,
   },
   arrow: {
     width: 28,
     height: 28,
   },
-
   calendarContainer: {
     backgroundColor: colors.black600,
     borderRadius: 24,
     padding: 16,
     marginBottom: 60,
   },
-
   calendarHeader: {
     flexDirection: "row",
     justifyContent: "space-between",

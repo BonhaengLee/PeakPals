@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Alert,
-  PermissionsAndroid,
   Platform,
   StyleSheet,
   View,
   Text,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import WebView from "react-native-webview";
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { webviewUrl } from "../utils/config";
 
-import { RootStackScreenProps, ScreenNames } from "../navigation/types";
-import { useSessionAndProfile } from "../hooks/useSessionAndProfile";
-
-interface HomeScreenProps {
-  navigation: RootStackScreenProps<"Home">["navigation"];
-}
-
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function HomeScreen() {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -26,34 +21,40 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [locationPermission, setLocationPermission] = useState<boolean | null>(
     null
   );
-  const [webViewRef, setWebViewRef] = useState<WebView | null>(null);
-
-  useSessionAndProfile({
-    setInitialRoute: (routeName: ScreenNames) => {
-      navigation.navigate(routeName as any);
-    },
-  });
+  const webViewRef = useRef<WebView>(null);
 
   useEffect(() => {
     const requestLocationPermission = async () => {
       try {
+        let permission;
         if (Platform.OS === "android") {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+        } else {
+          permission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+        }
+
+        const result = await check(permission);
+
+        if (result === RESULTS.GRANTED) {
+          setLocationPermission(true);
+          startTrackingLocation(); // 권한이 허가된 경우 위치 추적 시작
+        } else {
+          const requestResult = await request(permission);
+          if (requestResult === RESULTS.GRANTED) {
             setLocationPermission(true);
-          } else {
-            setLocationPermission(false);
+            startTrackingLocation(); // 요청 후 권한이 허가된 경우 위치 추적 시작
+          } else if (requestResult === RESULTS.BLOCKED) {
             Alert.alert(
               "Permission Denied",
-              "Location permission is required to use this feature."
+              "Location permission is required to use this feature. Please enable it in the settings.",
+              [
+                { text: "Cancel", style: "cancel" },
+                {
+                  text: "Open Settings",
+                  onPress: () => Linking.openSettings(),
+                },
+              ]
             );
-          }
-        } else {
-          const status = await Geolocation.requestAuthorization("whenInUse");
-          if (status === "granted") {
-            setLocationPermission(true);
           } else {
             setLocationPermission(false);
             Alert.alert(
@@ -68,17 +69,15 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       }
     };
 
-    requestLocationPermission();
-  }, []);
-
-  useEffect(() => {
-    if (locationPermission === true && webViewRef) {
+    const startTrackingLocation = () => {
       const watchId = Geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
-          if (webViewRef) {
-            webViewRef.postMessage(JSON.stringify({ latitude, longitude }));
+          if (webViewRef.current) {
+            webViewRef.current.postMessage(
+              JSON.stringify({ latitude, longitude })
+            );
           }
         },
         (error) => {
@@ -92,8 +91,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           Geolocation.clearWatch(watchId);
         }
       };
-    }
-  }, [locationPermission, webViewRef]);
+    };
+
+    requestLocationPermission();
+  }, []);
 
   if (locationPermission === null) {
     return (
@@ -120,8 +121,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <WebView
-        ref={(ref) => setWebViewRef(ref)}
-        source={{ uri: "https://your-webview-url.com" }}
+        ref={webViewRef}
+        source={{ uri: webviewUrl }}
         onMessage={(event) => {
           const message = JSON.parse(event.nativeEvent.data);
           console.log("Message received from WebView:", message);

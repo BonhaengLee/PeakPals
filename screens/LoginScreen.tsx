@@ -2,7 +2,8 @@ import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import { RootStackScreenProps } from "../navigation/types";
-import Auth from "../components/Auth";
+import GoogleAuth from "../components/GoogleAuth";
+import Auth from "../components/Auth.native";
 
 interface LoginScreenProps {
   navigation: RootStackScreenProps<"Login">["navigation"];
@@ -25,7 +26,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <Text style={styles.logoTitle}>클라이밍에 모든것, PeakPals</Text>
         </View>
 
-        <Auth onLoginSuccess={() => navigation.navigate("Terms")} />
+        <Auth onLoginSuccess={() => navigation.navigate("Terms")}>
+          <GoogleAuth onLoginSuccess={() => navigation.navigate("Terms")} />
+        </Auth>
         <StatusBar style="auto" />
       </View>
     </ImageBackground>

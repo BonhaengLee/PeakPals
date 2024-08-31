@@ -1,13 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
   Button,
-  Image,
-  ImageBackground,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Alert,
+  Pressable,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import CheckBox from "expo-checkbox";
@@ -15,8 +14,8 @@ import { RootStackScreenProps } from "../navigation/types";
 import { Feather } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 
 import colors from "../styles/colors";
@@ -70,6 +69,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
           id: user.id,
           email: user.email,
           nickname: user.email?.split("@")[0], // 기본 닉네임 설정
+          terms_agreed: true, // 약관 동의 완료 표시
         });
 
       if (userInsertError) {
@@ -101,6 +101,7 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
         Alert.alert("Error", error.message);
       } else {
         console.log("Terms agreement upserted successfully:", data);
+
         navigation.navigate("Profile");
       }
     } catch (error) {
@@ -124,9 +125,6 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
   const handleClosePress = () => bottomSheetRef.current?.close();
   const handleOpenPress = () => bottomSheetRef.current?.expand();
-  // const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-  // const snapeToIndex = (index: number) =>
-  //   bottomSheetRef.current?.snapToIndex(index);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -138,13 +136,11 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
     []
   );
 
-  // console.log("snapPoints", snapPoints);
-
   const renderContent = () => (
-    <View style={styles.bottomSheetContent}>
+    <BottomSheetScrollView contentContainerStyle={styles.bottomSheetContent}>
       <Text style={styles.modalText}>{modalContent}</Text>
       <Button title="닫기" onPress={handleClosePress} />
-    </View>
+    </BottomSheetScrollView>
   );
 
   return (
@@ -155,8 +151,11 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
         {/* 약관 전체 동의 */}
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.touchableCheckbox}
+          <Pressable
+            style={({ pressed }) => [
+              styles.touchableCheckbox,
+              pressed && { opacity: 0.7 },
+            ]}
             onPress={() => handleAgreeAll(!agreeAll)}
           >
             <View style={styles.checkboxWrapper}>
@@ -166,9 +165,9 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
                 style={styles.checkbox}
                 color={agreeAll ? colors.primary : undefined}
               />
+              <Text style={styles.label}>약관 전체 동의</Text>
             </View>
-            <Text style={styles.label}>약관 전체 동의</Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Feather
             style={styles.feather}
@@ -183,8 +182,11 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
         {/* (필수) 서비스 이용약관 */}
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.touchableCheckbox}
+          <Pressable
+            style={({ pressed }) => [
+              styles.touchableCheckbox,
+              pressed && { opacity: 0.7 },
+            ]}
             onPress={() => setAgreeService(!agreeService)}
           >
             <View style={styles.checkboxWrapper}>
@@ -194,9 +196,9 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
                 style={styles.checkbox}
                 color={agreeService ? colors.primary : undefined}
               />
+              <Text style={styles.label}>(필수) 서비스 이용약관</Text>
             </View>
-            <Text style={styles.label}>(필수) 서비스 이용약관</Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Feather
             style={styles.feather}
@@ -209,8 +211,11 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
         {/* (필수) 개인정보 처리 방침 */}
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.touchableCheckbox}
+          <Pressable
+            style={({ pressed }) => [
+              styles.touchableCheckbox,
+              pressed && { opacity: 0.7 },
+            ]}
             onPress={() => setAgreePrivacy(!agreePrivacy)}
           >
             <View style={styles.checkboxWrapper}>
@@ -220,9 +225,9 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
                 style={styles.checkbox}
                 color={agreePrivacy ? colors.primary : undefined}
               />
+              <Text style={styles.label}>(필수) 개인정보 처리 방침</Text>
             </View>
-            <Text style={styles.label}>(필수) 개인정보 처리 방침</Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Feather
             style={styles.feather}
@@ -235,8 +240,11 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
         {/* (선택) 마케팅 정보 수신 동의 */}
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.touchableCheckbox}
+          <Pressable
+            style={({ pressed }) => [
+              styles.touchableCheckbox,
+              pressed && { opacity: 0.7 },
+            ]}
             onPress={() => setAgreeMarketing(!agreeMarketing)}
           >
             <View style={styles.checkboxWrapper}>
@@ -246,9 +254,9 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
                 style={styles.checkbox}
                 color={agreeMarketing ? colors.primary : undefined}
               />
+              <Text style={styles.label}>(선택) 마케팅 정보 수신 동의</Text>
             </View>
-            <Text style={styles.label}>(선택) 마케팅 정보 수신 동의</Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Feather
             style={styles.feather}
@@ -260,18 +268,15 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
         </View>
 
         {/* 다음으로 이동 버튼 */}
-        <TouchableOpacity
-          style={styles.button}
-          // onPress={() => navigation.navigate("Profile")}
+        <Pressable
+          style={({ pressed }) => [styles.button, pressed && { opacity: 0.7 }]}
           onPress={handleSubmit}
         >
           <Text style={styles.buttonText}>다음</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         <BottomSheet
           ref={bottomSheetRef}
-          // renderContent={renderContent}
-          // 초기 페이지 로드 시 열려있지 않도록 설정
           index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
@@ -348,11 +353,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
   },
   bottomSheetContent: {
-    backgroundColor: "white",
     padding: 20,
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
   },
   modalText: {
     fontSize: 16,

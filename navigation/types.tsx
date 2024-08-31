@@ -14,6 +14,7 @@ export type RootStackParamList = {
   Profile: undefined; // 프로필 설정 페이지 추가
   BodyInfo: undefined; // 신체 정보 입력 페이지 추가
   CenterSearch: undefined; // 센터 찾기 입력 페이지 추가
+  HomeStack: undefined; // HomeStack 대신 MainTabs를 감싸는 네비게이터
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
@@ -35,3 +36,5 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
+
+export type ScreenNames = "MainTabs" | "Terms" | "Profile" | "Login" | "Home";

@@ -18,11 +18,11 @@ import { googleIosClientId, googleWebClientId } from "../utils/config";
 import colors from "../styles/colors";
 import { prisma } from "../utils/prisma";
 
-interface AuthProps {
+interface GoogleAuthProps {
   onLoginSuccess: () => void;
 }
 
-export default function Auth({ onLoginSuccess }: AuthProps) {
+export default function GoogleAuth({ onLoginSuccess }: GoogleAuthProps) {
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
     webClientId: googleWebClientId, // client ID of type WEB for your server (needed to verify user ID and offline access)
@@ -207,48 +207,35 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
   //   }
   // };
 
+  {
+    /* FIXME: Kakao 로그인 기능은 현재 지원하지 않습니다. */
+  }
+  {
+    /* <Pressable style={styles.kakaoButton} onPress={handleKakaoLogin}>
+  <Image
+    source={require("../assets/images/login/kakao.png")}
+    style={styles.kakao}
+  />
+</Pressable> */
+  }
   return (
-    <View style={styles.container}>
-      {/* <GoogleSigninButton
-        style={styles.googleButton}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={handleGoogleSignIn}
-      /> */}
-      <Pressable style={styles.googleButton} onPress={handleGoogleSignIn}>
-        <Image
-          source={require("../assets/images/login/google.png")}
-          style={styles.googleButtonImage}
-        />
-        <Text
-          style={styles.googleButtonText}
-          accessibilityRole="button"
-          aria-label="Google 로그인"
-        >
-          Google 구글로 로그인
-        </Text>
-      </Pressable>
-
-      {/* FIXME: Kakao 로그인 기능은 현재 지원하지 않습니다. */}
-      {/* <Pressable style={styles.kakaoButton} onPress={handleKakaoLogin}>
-        <Image
-          source={require("../assets/images/login/kakao.png")}
-          style={styles.kakao}
-        />
-      </Pressable> */}
-    </View>
+    <Pressable style={styles.googleButton} onPress={handleGoogleSignIn}>
+      <Image
+        source={require("../assets/images/login/google.png")}
+        style={styles.googleButtonImage}
+      />
+      <Text
+        style={styles.googleButtonText}
+        accessibilityRole="button"
+        aria-label="Google 로그인"
+      >
+        Google 구글로 로그인
+      </Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    marginTop: 20,
-    marginBottom: 32,
-    paddingHorizontal: 16,
-  },
   googleButton: {
     backgroundColor: colors.white1000,
     borderRadius: 8,

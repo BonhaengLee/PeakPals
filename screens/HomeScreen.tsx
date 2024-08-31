@@ -1,98 +1,133 @@
-import { useEffect, useState } from "react";
-import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Alert,
+  Platform,
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+  Linking,
+} from "react-native";
+import Geolocation from "react-native-geolocation-service";
+import WebView from "react-native-webview";
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { webviewUrl } from "../utils/config";
 
-import { RootStackScreenProps } from "../navigation/types";
-import colors from "../styles/colors";
-import { supabase } from "../utils/supabase";
-import { STORAGE_PATHS, TABLES, USER_FIELDS } from "../constants/supabase";
-
-interface HomeScreenProps {
-  navigation: RootStackScreenProps<"Home">["navigation"];
-}
-
-export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const [userProfile, setUserProfile] = useState<{
-    id: string;
-    nickname: string;
-    avatar_url: string;
+export default function HomeScreen() {
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
   } | null>(null);
-
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [locationPermission, setLocationPermission] = useState<boolean | null>(
+    null
+  );
+  const webViewRef = useRef<WebView>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const { data, error: userError } = await supabase.auth.getUser();
+    const requestLocationPermission = async () => {
+      try {
+        let permission;
+        if (Platform.OS === "android") {
+          permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+        } else {
+          permission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+        }
 
-      if (userError) {
-        console.error("Error fetching user:", userError.message);
-        return;
-      }
+        const result = await check(permission);
 
-      const user = data?.user;
-      if (!user) {
-        console.error("No user found");
-        return;
-      }
-
-      const { data: profileData, error } = await supabase
-        .from(TABLES.USER)
-        .select("*")
-        .eq(USER_FIELDS.ID, user.id);
-
-      if (error) {
-        console.error("Error fetching profile:", error.message);
-      } else if (profileData && profileData.length > 0) {
-        setUserProfile(profileData[0]);
-
-        const { data } = await supabase.storage
-          .from(STORAGE_PATHS.AVATARS)
-          .createSignedUrl(profileData[0].avatar_url, 60); // URL valid for 60 seconds
-        console.log(data?.signedUrl);
-
-        setAvatarUrl(data?.signedUrl || null);
-      } else {
-        console.error("No profile found");
+        if (result === RESULTS.GRANTED) {
+          setLocationPermission(true);
+          startTrackingLocation(); // 권한이 허가된 경우 위치 추적 시작
+        } else {
+          const requestResult = await request(permission);
+          if (requestResult === RESULTS.GRANTED) {
+            setLocationPermission(true);
+            startTrackingLocation(); // 요청 후 권한이 허가된 경우 위치 추적 시작
+          } else if (requestResult === RESULTS.BLOCKED) {
+            Alert.alert(
+              "Permission Denied",
+              "Location permission is required to use this feature. Please enable it in the settings.",
+              [
+                { text: "Cancel", style: "cancel" },
+                {
+                  text: "Open Settings",
+                  onPress: () => Linking.openSettings(),
+                },
+              ]
+            );
+          } else {
+            setLocationPermission(false);
+            Alert.alert(
+              "Permission Denied",
+              "Location permission is required to use this feature."
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Failed to request location permission:", error);
+        setLocationPermission(false);
       }
     };
 
-    fetchProfile();
+    const startTrackingLocation = () => {
+      const watchId = Geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+          if (webViewRef.current) {
+            webViewRef.current.postMessage(
+              JSON.stringify({ latitude, longitude })
+            );
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+        },
+        { enableHighAccuracy: true, distanceFilter: 0, interval: 5000 }
+      );
+
+      return () => {
+        if (watchId !== null) {
+          Geolocation.clearWatch(watchId);
+        }
+      };
+    };
+
+    requestLocationPermission();
   }, []);
 
-  console.log("home", avatarUrl);
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      Alert.alert("Error", error.message);
-    } else {
-      navigation.navigate("Login");
-    }
-  };
-
-  if (!userProfile) {
+  if (locationPermission === null) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>
+          Requesting location permission...
+        </Text>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
+  }
+
+  if (locationPermission === false) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>
+          Location permission denied. Please enable location permission in the
+          settings.
+        </Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>회원가입을 축하합니다!</Text>
-      <Text style={styles.subtitle}>{userProfile.nickname}</Text>
-      {avatarUrl ? (
-        <Image
-          source={{
-            uri: avatarUrl,
-          }}
-          style={styles.avatar}
-          onError={() => console.error("Failed to load image:", avatarUrl)}
-        />
-      ) : (
-        <View style={styles.avatarPlaceholder} />
-      )}
-      <Button title="Logout" onPress={handleLogout} />
+      <WebView
+        ref={webViewRef}
+        source={{ uri: webviewUrl }}
+        onMessage={(event) => {
+          const message = JSON.parse(event.nativeEvent.data);
+          console.log("Message received from WebView:", message);
+        }}
+      />
     </View>
   );
 }
@@ -100,29 +135,17 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white1000,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
-  subtitle: { fontSize: 18, color: colors.darkGray, marginBottom: 20 },
-  avatar: { width: 100, height: 100, borderRadius: 50, marginBottom: 20 },
-  avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: colors.lightGray,
-    marginBottom: 20,
+    backgroundColor: "white",
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: colors.white1000,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     fontSize: 18,
-    color: colors.darkGray,
+    color: "darkgray",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });

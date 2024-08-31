@@ -3,6 +3,9 @@
 <plist version="1.0">
   <dict>
     <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <!-- 여기에 필요한 URL 스킴을 추가할 수 있습니다. -->
+    </array>
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -70,5 +73,11 @@
     <string>Light</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>사용자의 위치를 지도에 표시하기 위해 사용합니다.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>항상 위치를 추적하기 위해 사용합니다.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>항상 및 사용 중일 때 위치를 추적하기 위해 사용합니다.</string>
   </dict>
 </plist>

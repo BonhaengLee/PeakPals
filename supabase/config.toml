@@ -156,6 +156,9 @@ auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
 [auth.external.google]
 enabled = true
 client_id = "166518374258-p0p4gqpmjq4ijbqfrqrjsub4me72c61a.apps.googleusercontent.com"
+[auth.external.apple]
+enabled = true
+client_id = "com.coalee.ho.service"
 # DO NOT commit your OAuth provider secret to git. Use environment variable substitution instead:
 secret = "asodkfjaws"
 # "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"

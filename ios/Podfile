@@ -1,6 +1,18 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
@@ -19,6 +31,19 @@ target 'ho' do
 
   use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
   use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
+
+  # Set up permissions
+  setup_permissions([
+    'LocationWhenInUse',
+    'LocationAlways',
+    # Add other permissions as needed
+    # 'Camera',
+    # 'Notifications',
+    # 'PhotoLibrary',
+    # ...
+  ])
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
 
   use_react_native!(
     :path => config[:reactNativePath],

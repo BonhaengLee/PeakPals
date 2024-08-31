@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
-import "react-native-url-polyfill/auto";
+import React, { useEffect, useState } from "react";
+import { AppRegistry, StyleSheet, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { AppRegistry, StyleSheet } from "react-native";
 import { Session } from "@supabase/supabase-js";
 
+import { supabase } from "./utils/supabase";
 import LoginScreen from "./screens/LoginScreen";
 import TermsScreen from "./screens/TermsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
-import { supabase } from "./utils/supabase";
-// import CenterSearchScreen from "./screens/CenterSearchScreen";
 import MyPageScreen from "./screens/MyPageScreen";
+import { TABLES, USER_FIELDS } from "./constants/supabase";
 
 import colors from "./styles/colors";
 
@@ -29,20 +28,17 @@ function MainTabs() {
       }}
     >
       <Tab.Screen name="센터 찾기" component={HomeScreen} />
-      {/* <Tab.Screen name={"Peak-Pals"} component={MyPageScreen} /> */}
       <Tab.Screen
-        name={"Peak-Pals"}
+        name="Peak-Pals"
         component={MyPageScreen}
         options={{
           headerStyle: {
-            backgroundColor: "#000000", // 헤더의 배경색 설정
-
-            // borderBottom 표시
+            backgroundColor: "#000000",
             borderBottomColor: colors.black600,
             shadowColor: "transparent",
             borderBottomWidth: 1,
           },
-          headerTintColor: "#FFFFFF", // 헤더 내 텍스트와 아이콘 색상 설정
+          headerTintColor: "#FFFFFF",
           headerTitleStyle: {
             fontSize: 16,
             fontWeight: "bold",
@@ -57,22 +53,73 @@ function MainTabs() {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
+  const [initialRoute, setInitialRoute] = useState<
+    "Login" | "Terms" | "Profile" | "HomeStack"
+  >("Login");
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    // 현재 세션 정보를 가져옵니다.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-    // 세션 상태 변경을 감지합니다.
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    const fetchSessionAndProfile = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const currentSession = sessionData?.session;
+      setSession(currentSession);
+
+      if (currentSession) {
+        const { data: profileData, error } = await supabase
+          .from(TABLES.USER)
+          .select("terms_agreed, profile_complete")
+          .eq(USER_FIELDS.ID, currentSession.user.id)
+          .single();
+
+        if (error) {
+          console.error("프로필을 가져오는 중 오류 발생:", error.message);
+          setInitialRoute("Login"); // 로그인으로 되돌아가기
+        } else {
+          if (!profileData?.terms_agreed) {
+            setInitialRoute("Terms");
+          } else if (!profileData?.profile_complete) {
+            setInitialRoute("Profile");
+          } else {
+            setInitialRoute("HomeStack");
+          }
+        }
+      } else {
+        setInitialRoute("Login");
+      }
+      setIsLoading(false); // 로딩 완료
+    };
+
+    fetchSessionAndProfile();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        if (!session) {
+          setInitialRoute("Login");
+        }
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, []);
+
+  if (isLoading) {
+    // 로딩 상태를 처리하는 화면
+    return (
+      <GestureHandlerRootView
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <Text>로딩 중...</Text>
+      </GestureHandlerRootView>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={session ? "HomeStack" : "Login"}>
+        <Stack.Navigator initialRouteName={initialRoute}>
           {session ? (
             <>
               <Stack.Screen
@@ -104,7 +151,6 @@ export default function App() {
   );
 }
 
-// HomeStack은 Stack.Navigator를 사용하여 MainTabs와 다른 화면을 포함하는 네비게이터를 정의
 function HomeStack() {
   return (
     <Stack.Navigator initialRouteName="MainTabs">

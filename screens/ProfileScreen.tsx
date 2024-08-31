@@ -3,10 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  Pressable,
   TextInput,
   Alert,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { RootStackScreenProps } from "../navigation/types";
 import colors from "../styles/colors";
@@ -44,6 +45,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
         [USER_FIELDS.EMAIL]: user.email,
         [USER_FIELDS.NICKNAME]: nickname,
         [USER_FIELDS.AVATAR_URL]: avatarUrl || null,
+        profile_complete: true, // 프로필 설정 완료 표시
       };
 
       const { data: updateData, error: updateError } = await supabase
@@ -56,7 +58,8 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
         Alert.alert("프로필 업데이트 실패", updateError.message);
       } else {
         console.log("Profile updated successfully", updateData);
-        navigation.navigate("Home");
+
+        navigation.navigate("HomeStack");
       }
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -65,44 +68,56 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.progressBar}>
-        <View style={styles.progress} />
-      </View>
-      <Text style={styles.title}>반가워요!</Text>
-      <Text style={styles.subtitle}>
-        우선 시작하기 전에 사용할 닉네임과 프로필 이미지를 선택해 주실 수
-        있나요?
-      </Text>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.scrollContainer}
+      extraHeight={120} // 필요한 경우 여백을 추가해줍니다
+    >
+      <View style={styles.container}>
+        <View style={styles.progressBar}>
+          <View style={styles.progress} />
+        </View>
+        <Text style={styles.title}>반가워요!</Text>
+        <Text style={styles.subtitle}>
+          우선 시작하기 전에 사용할 닉네임과 프로필 이미지를 선택해 주실 수
+          있나요?
+        </Text>
 
-      <Avatar
-        size={100}
-        url={avatarUrl}
-        onUpload={(url: string) => setAvatarUrl(url)}
-      />
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.inputText}
-          value={nickname}
-          onChangeText={setNickname}
-          placeholder="닉네임(최대 8자 한글, 숫자 또는 영문)"
-          placeholderTextColor={colors.white900}
-          maxLength={8}
+        <Avatar
+          size={100}
+          url={avatarUrl}
+          onUpload={(url: string) => setAvatarUrl(url)}
         />
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputText}
+            value={nickname}
+            onChangeText={setNickname}
+            placeholder="닉네임(최대 8자 한글, 숫자 또는 영문)"
+            placeholderTextColor={colors.white900}
+            maxLength={8}
+          />
+        </View>
+        <Pressable
+          style={({ pressed }) => [styles.button, pressed && { opacity: 0.7 }]}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.buttonText}>다음</Text>
+        </Pressable>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>다음</Text>
-      </TouchableOpacity>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.backgroundBlack,
     padding: 20,
+    justifyContent: "center",
   },
   progressBar: {
     width: "100%",
@@ -143,10 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-    position: "absolute",
-    bottom: 50,
-    left: 20,
-    right: 20,
+    marginTop: 20, // 버튼을 입력 칸과 겹치지 않도록 간격을 줌
   },
   buttonText: {
     color: colors.textBlack,

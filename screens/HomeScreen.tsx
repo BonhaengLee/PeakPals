@@ -95,9 +95,9 @@ const HomeScreen = forwardRef((props, ref) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
           if (webViewRef.current) {
-            webViewRef.current.postMessage(
-              JSON.stringify({ latitude, longitude })
-            );
+            const message = JSON.stringify({ latitude, longitude });
+            console.log("Sending location to WebView:", message); // 디버깅을 위해 로그 추가
+            webViewRef.current.postMessage(message);
           }
         },
         (error) => {
@@ -129,6 +129,14 @@ const HomeScreen = forwardRef((props, ref) => {
   // 웹뷰 로딩 완료 처리
   const handleLoadEnd = () => {
     setLoading(false);
+    // WebView가 완전히 로드된 후 위치 데이터를 다시 보냄
+    if (location) {
+      const message = JSON.stringify({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+      webViewRef.current?.postMessage(message);
+    }
   };
 
   // 웹뷰 오류 처리
@@ -209,6 +217,7 @@ const HomeScreen = forwardRef((props, ref) => {
         startInLoadingState={true}
         cacheEnabled={true}
         cacheMode="LOAD_DEFAULT"
+        javaScriptEnabled={true}
         renderLoading={() => (
           <View style={styles.loadingOverlay}>
             <ActivityIndicator size="large" color="gray" />

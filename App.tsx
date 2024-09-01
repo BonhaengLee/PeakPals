@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { AppRegistry, StyleSheet, Text } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { AppRegistry, Pressable, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,18 +16,69 @@ import { TABLES, USER_FIELDS } from "./constants/supabase";
 
 import colors from "./styles/colors";
 
+import { WebView } from "react-native-webview";
+import { Platform } from "react-native";
+
+if (Platform.OS === "android") {
+  WebView.setWebContentsDebuggingEnabled(true);
+}
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs() {
+  const homeScreenRef = useRef<{ reloadWebView: () => void } | null>(null);
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
       }}
+      tabBar={({ state, descriptors, navigation }) => (
+        <View style={styles.tabBar}>
+          {state.routes.map((route, index) => {
+            const { options } = descriptors[route.key];
+            const label =
+              options.tabBarLabel !== undefined
+                ? options.tabBarLabel
+                : options.title !== undefined
+                ? options.title
+                : route.name;
+
+            const isFocused = state.index === index;
+
+            const onPress = () => {
+              if (isFocused && route.name === "센터 찾기") {
+                homeScreenRef.current?.reloadWebView();
+              } else {
+                navigation.navigate(route.name);
+              }
+            };
+
+            return (
+              <Pressable
+                key={route.key}
+                onPress={onPress}
+                style={[
+                  styles.tabItem,
+                  {
+                    backgroundColor: isFocused ? colors.gray500 : "transparent",
+                  },
+                ]}
+              >
+                <Text style={styles.tabBarLabel}>{String(label)}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
+      )}
     >
-      <Tab.Screen name="센터 찾기" component={HomeScreen} />
+      <Tab.Screen
+        name="센터 찾기"
+        options={{ headerShown: false }}
+        children={() => <HomeScreen ref={homeScreenRef} />}
+      />
       <Tab.Screen
         name="Peak-Pals"
         component={MyPageScreen}
@@ -56,7 +107,7 @@ export default function App() {
   const [initialRoute, setInitialRoute] = useState<
     "Login" | "Terms" | "Profile" | "HomeStack"
   >("Login");
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
@@ -73,7 +124,7 @@ export default function App() {
 
         if (error) {
           console.error("프로필을 가져오는 중 오류 발생:", error.message);
-          setInitialRoute("Login"); // 로그인으로 되돌아가기
+          setInitialRoute("Login");
         } else {
           if (!profileData?.terms_agreed) {
             setInitialRoute("Terms");
@@ -86,7 +137,7 @@ export default function App() {
       } else {
         setInitialRoute("Login");
       }
-      setIsLoading(false); // 로딩 완료
+      setIsLoading(false);
     };
 
     fetchSessionAndProfile();
@@ -106,7 +157,6 @@ export default function App() {
   }, []);
 
   if (isLoading) {
-    // 로딩 상태를 처리하는 화면
     return (
       <GestureHandlerRootView
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -180,15 +230,22 @@ function HomeStack() {
 
 const styles = StyleSheet.create({
   tabBar: {
+    flexDirection: "row", // 탭 아이템들이 가로로 나열되도록 설정
     backgroundColor: "#000000",
     borderTopWidth: 1,
     borderTopColor: "#333333",
     height: 60,
   },
+  tabItem: {
+    flex: 1, // 탭 아이템이 동일한 너비를 차지하도록 설정
+    justifyContent: "center",
+    alignItems: "center",
+  },
   tabBarLabel: {
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

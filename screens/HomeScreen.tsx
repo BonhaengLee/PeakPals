@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   Alert,
   Platform,
@@ -7,13 +13,18 @@ import {
   Text,
   ActivityIndicator,
   Linking,
+  NativeSyntheticEvent,
+  Button,
 } from "react-native";
 import Geolocation from "react-native-geolocation-service";
-import WebView from "react-native-webview";
+import WebView, { WebViewMessageEvent } from "react-native-webview";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { useNavigation } from "@react-navigation/native";
+import { WebViewErrorEvent } from "react-native-webview/lib/RNCWebViewNativeComponent";
+
 import { webviewUrl } from "../utils/config";
 
-export default function HomeScreen() {
+const HomeScreen = forwardRef((props, ref) => {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -22,6 +33,15 @@ export default function HomeScreen() {
     null
   );
   const webViewRef = useRef<WebView>(null);
+  const navigation = useNavigation();
+
+  useImperativeHandle(ref, () => ({
+    reloadWebView: () => {
+      if (webViewRef.current) {
+        webViewRef.current.reload();
+      }
+    },
+  }));
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -96,6 +116,49 @@ export default function HomeScreen() {
     requestLocationPermission();
   }, []);
 
+  const [webViewKey, setWebViewKey] = useState<number>(0); // 웹뷰의 키 상태
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadError, setLoadError] = useState<boolean>(false);
+
+  // 웹뷰 로딩 중 표시
+  const handleLoadStart = () => {
+    setLoading(true);
+    setLoadError(false);
+  };
+
+  // 웹뷰 로딩 완료 처리
+  const handleLoadEnd = () => {
+    setLoading(false);
+  };
+
+  // 웹뷰 오류 처리
+  const handleWebViewError = (
+    syntheticEvent: NativeSyntheticEvent<WebViewErrorEvent>
+  ) => {
+    const { nativeEvent } = syntheticEvent;
+    console.error("WebView error: ", nativeEvent);
+    setLoadError(true);
+    setLoading(false);
+  };
+
+  // 헤더 변경
+  const handleWebViewMessage = (event: WebViewMessageEvent) => {
+    const message = JSON.parse(event.nativeEvent.data);
+    if (message.type === "CENTER_SELECTED") {
+      const { centerName } = message.data;
+
+      // 헤더를 선택된 센터 이름으로 변경
+      navigation.setOptions({
+        title: centerName,
+        headerLeft: () => (
+          <Text onPress={() => navigation.goBack()} style={styles.backButton}>
+            뒤로가기
+          </Text>
+        ),
+      });
+    }
+  };
+
   if (locationPermission === null) {
     return (
       <View style={styles.loadingContainer}>
@@ -118,19 +181,49 @@ export default function HomeScreen() {
     );
   }
 
+  // 웹뷰 로드 에러
+  if (loadError) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>
+          Unable to load the content. Please check your connection.
+        </Text>
+        <Button
+          title="Retry"
+          onPress={() => setWebViewKey((prevKey) => prevKey + 1)}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="gray" />
+        </View>
+      )}
+
       <WebView
+        key={webViewKey} // 키를 추가하여 리로드 처리
+        startInLoadingState={true}
+        cacheEnabled={true}
+        cacheMode="LOAD_DEFAULT"
+        renderLoading={() => (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="gray" />
+          </View>
+        )}
         ref={webViewRef}
         source={{ uri: webviewUrl }}
-        onMessage={(event) => {
-          const message = JSON.parse(event.nativeEvent.data);
-          console.log("Message received from WebView:", message);
-        }}
+        onMessage={handleWebViewMessage}
+        onLoadStart={handleLoadStart}
+        onLoadEnd={handleLoadEnd}
+        onError={handleWebViewError}
       />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -148,4 +241,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: 20,
   },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backButton: {
+    color: "blue",
+    paddingLeft: 10,
+    paddingTop: 10,
+    fontSize: 16,
+  },
 });
+
+export default HomeScreen;

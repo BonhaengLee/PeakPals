@@ -19,9 +19,9 @@ import colors from "./styles/colors";
 import { WebView } from "react-native-webview";
 import { Platform } from "react-native";
 
-if (Platform.OS === "android") {
-  WebView.setWebContentsDebuggingEnabled(true);
-}
+// if (Platform.OS === "android") {
+//   WebView.setWebContentsDebuggingEnabled(true);
+// }
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

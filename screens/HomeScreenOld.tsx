@@ -10,7 +10,7 @@ interface HomeScreenProps {
   navigation: RootStackScreenProps<"Home">["navigation"];
 }
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function HomeOldScreen({ navigation }: HomeScreenProps) {
   const [userProfile, setUserProfile] = useState<{
     id: string;
     nickname: string;

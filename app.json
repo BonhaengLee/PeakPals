@@ -4,6 +4,7 @@
     "slug": "ho",
     "version": "1.0.0",
     "orientation": "portrait",
+    "entryPoint": "./App.tsx",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {

@@ -115,7 +115,9 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
             style={[styles.avatar, avatarSize]}
           />
         ) : (
-          <View style={[styles.imagePlaceholder, avatarSize]} />
+          <View style={[styles.imagePlaceholder, avatarSize]}>
+            <Text style={styles.placeholderText}>No Image</Text>
+          </View>
         )}
       </TouchableOpacity>
       <TouchableOpacity
@@ -160,6 +162,9 @@ const styles = StyleSheet.create({
   },
   uploadingText: {
     marginTop: 10,
+    color: colors.white1000,
+  },
+  placeholderText: {
     color: colors.white1000,
   },
 });

@@ -18,7 +18,7 @@ import BottomSheet, {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { supabase } from "../utils/supabase";
 import { TABLES } from "../constants/supabase";
 import { TERMS_AGREEMENT_LIST } from "../constants/termsAgreement";

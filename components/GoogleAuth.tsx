@@ -15,7 +15,7 @@ import {
 
 import { supabase } from "../utils/supabase";
 import { googleIosClientId, googleWebClientId } from "../utils/config";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { prisma } from "../utils/prisma";
 
 interface GoogleAuthProps {

@@ -10,7 +10,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 
 import { supabase } from "../utils/supabase";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { STORAGE_PATHS } from "../constants/supabase";
 
 interface Props {

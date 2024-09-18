@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 
 import { RootStackScreenProps } from "../navigation/types";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { supabase } from "../utils/supabase";
 import { STORAGE_PATHS, TABLES, USER_FIELDS } from "../constants/supabase";
 

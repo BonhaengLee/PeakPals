@@ -27,7 +27,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs() {
-  const homeScreenRef = useRef<{ reloadWebView: () => void } | null>(null);
+  // const homeScreenRef = useRef<{ reloadWebView: () => void } | null>(null);
 
   return (
     <Tab.Navigator
@@ -48,18 +48,18 @@ function MainTabs() {
 
             const isFocused = state.index === index;
 
-            const onPress = () => {
-              if (isFocused && route.name === "센터 찾기") {
-                homeScreenRef.current?.reloadWebView();
-              } else {
-                navigation.navigate(route.name);
-              }
-            };
+            // const onPress = () => {
+            //   if (isFocused && route.name === "센터 찾기") {
+            //     homeScreenRef.current?.reloadWebView();
+            //   } else {
+            //     navigation.navigate(route.name);
+            //   }
+            // };
 
             return (
               <Pressable
                 key={route.key}
-                onPress={onPress}
+                // onPress={onPress}
                 style={[
                   styles.tabItem,
                   {
@@ -77,7 +77,7 @@ function MainTabs() {
       <Tab.Screen
         name="센터 찾기"
         options={{ headerShown: false }}
-        children={() => <HomeScreen ref={homeScreenRef} />}
+        component={HomeScreen}
       />
       <Tab.Screen
         name="Peak-Pals"

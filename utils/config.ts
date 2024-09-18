@@ -8,3 +8,6 @@ export const googleIosClientId =
 export const storageUrl = `${supabaseUrl}/storage/v1/object/public`;
 
 export const webviewUrl = process.env.EXPO_PUBLIC_WEBVIEW_URL || "";
+
+export const naverMapClientId =
+  process.env.EXPO_PUBLIC_NAVER_MAP_CLIENT_ID || "";

@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Alert,
   Platform,
@@ -13,18 +7,16 @@ import {
   Text,
   ActivityIndicator,
   Linking,
-  NativeSyntheticEvent,
   Button,
 } from "react-native";
-import Geolocation from "react-native-geolocation-service";
-import WebView, { WebViewMessageEvent } from "react-native-webview";
-import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { useNavigation } from "@react-navigation/native";
-import { WebViewErrorEvent } from "react-native-webview/lib/RNCWebViewNativeComponent";
+import * as Location from "expo-location";
+import {
+  NaverMapView,
+  NaverMapViewRef,
+  // NaverMapMarker,
+} from "@mj-studio/react-native-naver-map";
 
-import { webviewUrl } from "../utils/config";
-
-const HomeScreen = forwardRef((props, ref) => {
+export default function HomeScreen() {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -32,146 +24,90 @@ const HomeScreen = forwardRef((props, ref) => {
   const [locationPermission, setLocationPermission] = useState<boolean | null>(
     null
   );
-  const webViewRef = useRef<WebView>(null);
-  const navigation = useNavigation();
-
-  useImperativeHandle(ref, () => ({
-    reloadWebView: () => {
-      if (webViewRef.current) {
-        webViewRef.current.reload();
-      }
-    },
-  }));
+  const mapViewRef = useRef<NaverMapViewRef>(null);
 
   useEffect(() => {
     const requestLocationPermission = async () => {
       try {
-        let permission;
-        if (Platform.OS === "android") {
-          permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-        } else {
-          permission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
-        }
-
-        const result = await check(permission);
-
-        if (result === RESULTS.GRANTED) {
+        // 위치 권한 요청
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === "granted") {
           setLocationPermission(true);
-          startTrackingLocation(); // 권한이 허가된 경우 위치 추적 시작
+          startTrackingLocation();
+        } else if (status === "denied") {
+          Alert.alert(
+            "권한 거부됨",
+            "이 기능을 사용하려면 위치 권한이 필요합니다. 설정에서 권한을 허용해주세요.",
+            [
+              { text: "취소", style: "cancel" },
+              {
+                text: "설정 열기",
+                onPress: () => Linking.openSettings(),
+              },
+            ]
+          );
+          setLocationPermission(false);
         } else {
-          const requestResult = await request(permission);
-          if (requestResult === RESULTS.GRANTED) {
-            setLocationPermission(true);
-            startTrackingLocation(); // 요청 후 권한이 허가된 경우 위치 추적 시작
-          } else if (requestResult === RESULTS.BLOCKED) {
-            Alert.alert(
-              "Permission Denied",
-              "Location permission is required to use this feature. Please enable it in the settings.",
-              [
-                { text: "Cancel", style: "cancel" },
-                {
-                  text: "Open Settings",
-                  onPress: () => Linking.openSettings(),
-                },
-              ]
-            );
-          } else {
-            setLocationPermission(false);
-            Alert.alert(
-              "Permission Denied",
-              "Location permission is required to use this feature."
-            );
-          }
+          setLocationPermission(false);
+          Alert.alert(
+            "권한 거부됨",
+            "이 기능을 사용하려면 위치 권한이 필요합니다."
+          );
         }
       } catch (error) {
-        console.error("Failed to request location permission:", error);
+        console.error("위치 권한 요청 실패:", error);
         setLocationPermission(false);
       }
     };
 
-    const startTrackingLocation = () => {
-      const watchId = Geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
-          if (webViewRef.current) {
-            const message = JSON.stringify({ latitude, longitude });
-            console.log("Sending location to WebView:", message); // 디버깅을 위해 로그 추가
-            webViewRef.current.postMessage(message);
-          }
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-        },
-        { enableHighAccuracy: true, distanceFilter: 0, interval: 5000 }
-      );
+    const startTrackingLocation = async () => {
+      try {
+        // 현재 위치 가져오기
+        const currentLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High,
+        });
+        setLocation({
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+        });
 
-      return () => {
-        if (watchId !== null) {
-          Geolocation.clearWatch(watchId);
-        }
-      };
+        // 위치 변경 구독
+        Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            distanceInterval: 1, // 최소 이동 거리(m)
+            timeInterval: 5000, // 최소 시간 간격(ms)
+          },
+          (position) => {
+            setLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          }
+        );
+      } catch (error) {
+        console.error("위치 정보 에러:", error);
+      }
     };
 
     requestLocationPermission();
   }, []);
 
-  const [webViewKey, setWebViewKey] = useState<number>(0); // 웹뷰의 키 상태
   const [loading, setLoading] = useState<boolean>(true);
-  const [loadError, setLoadError] = useState<boolean>(false);
 
-  // 웹뷰 로딩 중 표시
-  const handleLoadStart = () => {
-    setLoading(true);
-    setLoadError(false);
-  };
-
-  // 웹뷰 로딩 완료 처리
-  const handleLoadEnd = () => {
-    setLoading(false);
-    // WebView가 완전히 로드된 후 위치 데이터를 다시 보냄
+  useEffect(() => {
     if (location) {
-      const message = JSON.stringify({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
-      webViewRef.current?.postMessage(message);
+      setLoading(false);
     }
-  };
+  }, [location]);
 
-  // 웹뷰 오류 처리
-  const handleWebViewError = (
-    syntheticEvent: NativeSyntheticEvent<WebViewErrorEvent>
-  ) => {
-    const { nativeEvent } = syntheticEvent;
-    console.error("WebView error: ", nativeEvent);
-    setLoadError(true);
-    setLoading(false);
-  };
-
-  // 헤더 변경
-  const handleWebViewMessage = (event: WebViewMessageEvent) => {
-    const message = JSON.parse(event.nativeEvent.data);
-    if (message.type === "CENTER_SELECTED") {
-      const { centerName } = message.data;
-
-      // 헤더를 선택된 센터 이름으로 변경
-      navigation.setOptions({
-        title: centerName,
-        headerLeft: () => (
-          <Text onPress={() => navigation.goBack()} style={styles.backButton}>
-            뒤로가기
-          </Text>
-        ),
-      });
-    }
-  };
-
-  if (locationPermission === null) {
+  if (locationPermission === null || loading) {
     return (
       <View style={styles.loadingContainer}>
         <Text style={styles.loadingText}>
-          Requesting location permission...
+          {locationPermission === null
+            ? "위치 권한을 요청 중입니다..."
+            : "현재 위치를 가져오는 중입니다..."}
         </Text>
         <ActivityIndicator size="large" color="gray" />
       </View>
@@ -182,86 +118,61 @@ const HomeScreen = forwardRef((props, ref) => {
     return (
       <View style={styles.loadingContainer}>
         <Text style={styles.loadingText}>
-          Location permission denied. Please enable location permission in the
-          settings.
+          위치 권한이 거부되었습니다. 설정에서 위치 권한을 허용해주세요.
         </Text>
-      </View>
-    );
-  }
-
-  // 웹뷰 로드 에러
-  if (loadError) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>
-          Unable to load the content. Please check your connection.
-        </Text>
-        <Button
-          title="Retry"
-          onPress={() => setWebViewKey((prevKey) => prevKey + 1)}
-        />
+        <Button title="설정 열기" onPress={() => Linking.openSettings()} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      {loading && (
-        <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="gray" />
-        </View>
-      )}
-
-      <WebView
-        key={webViewKey} // 키를 추가하여 리로드 처리
-        startInLoadingState={true}
-        cacheEnabled={true}
-        cacheMode="LOAD_DEFAULT"
-        javaScriptEnabled={true}
-        renderLoading={() => (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="gray" />
-          </View>
-        )}
-        ref={webViewRef}
-        source={{ uri: webviewUrl }}
-        onMessage={handleWebViewMessage}
-        onLoadStart={handleLoadStart}
-        onLoadEnd={handleLoadEnd}
-        onError={handleWebViewError}
-      />
+      <NaverMapView
+        ref={mapViewRef}
+        style={{ flex: 1 }}
+        center={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          zoom: 16,
+        }}
+        onCameraChange={(event) => {
+          console.log("Camera Change", event);
+        }}
+        onMapClick={(event) => {
+          console.log("Map Click", event);
+        }}
+      >
+        {/* <NaverMapMarker
+          coordinate={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }}
+          onClick={() => {
+            console.log("현재 위치 마커 클릭됨");
+          }}
+          caption={{
+            text: "현재 위치",
+          }}
+        /> */}
+      </NaverMapView>
     </View>
   );
-});
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 20,
   },
   loadingText: {
     fontSize: 18,
     color: "darkgray",
     textAlign: "center",
-    paddingHorizontal: 20,
-  },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  backButton: {
-    color: "blue",
-    paddingLeft: 10,
-    paddingTop: 10,
-    fontSize: 16,
+    marginBottom: 20,
   },
 });
-
-export default HomeScreen;

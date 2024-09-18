@@ -2,11 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <!-- 여기에 필요한 URL 스킴을 추가할 수 있습니다. -->
-    </array>
     <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
+    <key>CFBundleAllowMixedLocalizations</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -38,8 +36,12 @@
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array/>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>NMFClientId</key>
+    <string>u913qy1883</string>
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSAllowsArbitraryLoads</key>
@@ -47,6 +49,27 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>앱이 위치 정보를 사용합니다.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>앱이 위치 정보를 사용합니다.</string>
+    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+      <key>location</key>
+      <string>앱이 위치 정보를 사용합니다.</string>
+    </dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>앱이 실행 중일 때 위치 정보를 사용하려면 권한이 필요합니다.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your photos</string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>location</string>
+    </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
@@ -73,11 +96,5 @@
     <string>Light</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>사용자의 위치를 지도에 표시하기 위해 사용합니다.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>항상 위치를 추적하기 위해 사용합니다.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>항상 및 사용 중일 때 위치를 추적하기 위해 사용합니다.</string>
   </dict>
 </plist>

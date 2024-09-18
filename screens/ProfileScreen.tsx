@@ -10,7 +10,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { RootStackScreenProps } from "../navigation/types";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { supabase } from "../utils/supabase";
 import Avatar from "../components/Avatar";
 import { TABLES, USER_FIELDS } from "../constants/supabase";

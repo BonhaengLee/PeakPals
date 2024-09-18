@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
 import MyPageScreen from "../screens/MyPageScreen";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 
 const Tab = createBottomTabNavigator();
 function MainTabs() {

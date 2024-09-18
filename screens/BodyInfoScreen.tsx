@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { RootStackScreenProps } from "../navigation/types";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 
 interface BodyInfoScreenProps {
   navigation: RootStackScreenProps<"BodyInfo">["navigation"];

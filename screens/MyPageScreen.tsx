@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
-import colors from "../styles/colors";
+import { colors } from "../styles/colors";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { ScrollView } from "react-native-gesture-handler";
 import { supabase } from "../utils/supabase"; // supabase import 추가

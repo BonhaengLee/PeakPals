@@ -1,14 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"  package="com.coalee.ho"
->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.coalee.ho">
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
   <queries>
     <intent>
       <action android:name="android.intent.action.VIEW"/>
@@ -17,14 +16,9 @@ xmlns:tools="http://schemas.android.com/tools"  package="com.coalee.ho"
     </intent>
   </queries>
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme">
-  <!-- Google Sign-In 설정 추가 -->
-    <meta-data
-      android:name="com.google.android.gms.auth.api.credentials.CREDENTIAL_PICKER_ENABLED"
-      android:value="true"/>
-    <meta-data
-      android:name="com.google.android.gms.auth.api.signin.server_client_id"
-      android:value="@string/google_web_client_id"/>
-
+    <meta-data android:name="com.google.android.gms.auth.api.credentials.CREDENTIAL_PICKER_ENABLED" android:value="true"/>
+    <meta-data android:name="com.google.android.gms.auth.api.signin.server_client_id" android:value="@string/google_web_client_id"/>
+    <meta-data android:name="com.naver.maps.map.CLIENT_ID" android:value="u913qy1883"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
@@ -41,19 +35,13 @@ xmlns:tools="http://schemas.android.com/tools"  package="com.coalee.ho"
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
-
-    <activity
-        android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-            <data android:host="oauth"
-                    android:scheme="kakaoc1e27c6cccdf342a776ba5f1c6fc6bc9" />
-        </intent-filter>
+    <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:host="oauth" android:scheme="kakaoc1e27c6cccdf342a776ba5f1c6fc6bc9"/>
+      </intent-filter>
     </activity>
   </application>
 </manifest>

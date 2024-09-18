@@ -34,8 +34,9 @@ target 'ho' do
 
   # Set up permissions
   setup_permissions([
-    'LocationWhenInUse',
+    'LocationAccuracy',
     'LocationAlways',
+    'LocationWhenInUse',
     # Add other permissions as needed
     # 'Camera',
     # 'Notifications',

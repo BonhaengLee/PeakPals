@@ -12,20 +12,22 @@ import {
   Text,
   ActivityIndicator,
   Linking,
+  Pressable,
+  SafeAreaView,
+  Image,
 } from "react-native";
 import {
   NaverMapView,
   NaverMapViewRef,
+  NaverMapMarkerOverlay,
 } from "@mj-studio/react-native-naver-map";
 import * as Location from "expo-location";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+
+import { supabase } from "../lib/supabaseClient";
 
 // MainTabs 높이 + 40px을 계산
-const MAIN_TABS_HEIGHT = 76; // MainTabs의 높이
+const MAIN_TABS_HEIGHT = 92; // MainTabs의 높이
 const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40; // 항상 최소한 이 높이까지만 내려가게 함
 
 const checkIfLocationServicesEnabled = async () => {
@@ -53,7 +55,7 @@ const requestLocationPermission = async (setLocationPermission: Function) => {
     } else {
       Alert.alert(
         "위치 권한 필요",
-        "위치 권한을 허용해야 이 기능을 사용할 수 있습니다. 설정에서 권한을 허용해주세요.",
+        "위치 권한을 허용해야 이 기능을 사용할 수 있습니다.",
         [
           { text: "설정으로 가기", onPress: () => Linking.openSettings() },
           { text: "취소", style: "cancel" },
@@ -110,6 +112,7 @@ export default function HomeScreen() {
     null
   );
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [isSheetFullyOpen, setIsSheetFullyOpen] = useState(false); // 바텀시트 열린 상태
   const mapViewRef = useRef<NaverMapViewRef>(null);
 
   useEffect(() => {
@@ -129,30 +132,32 @@ export default function HomeScreen() {
   }, []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => [MIN_SHEET_HEIGHT, "50%", "90%"], []);
 
-  // snapPoints를 최소 높이로 설정
-  const snapPoints = useMemo(() => [`${MIN_SHEET_HEIGHT}px`, "50%", "90%"], []);
-
-  const handleOpenPress = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
-
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        {...props}
-      />
-    ),
-    []
-  );
+  const moveToCurrentLocation = () => {
+    if (location && mapViewRef.current) {
+      mapViewRef.current.animateCameraTo({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        zoom: 16,
+        duration: 800,
+      });
+    } else {
+      console.error("mapViewRef is not initialized");
+    }
+  };
 
   const renderContent = () => (
     <BottomSheetScrollView contentContainerStyle={styles.bottomSheetContent}>
       <Text style={styles.modalText}>바텀 시트 내용</Text>
     </BottomSheetScrollView>
   );
+
+  // 바텀시트 상태 변경 시 호출되는 함수
+  const handleSheetChanges = useCallback((index: number) => {
+    // 바텀시트가 완전히 열렸는지 여부 업데이트
+    setIsSheetFullyOpen(index === 2); // index가 2이면 완전히 열린 상태
+  }, []);
 
   if (!location) {
     return (
@@ -167,6 +172,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {/* 지도는 SafeAreaView 밖에서 터치 가능하도록 배치 */}
       <NaverMapView
         ref={mapViewRef}
         style={styles.map}
@@ -175,20 +181,57 @@ export default function HomeScreen() {
           longitude: location.longitude,
           zoom: 16,
         }}
-      />
+      >
+        {/* 현재 위치 마커 */}
+        <NaverMapMarkerOverlay
+          latitude={location.latitude}
+          longitude={location.longitude}
+          width={24} // 마커의 크기 조절
+          height={24}
+          anchor={{ x: 0.5, y: 1 }} // 마커의 위치 조정
+          image={require("../assets/images/maps/myLocationPoint.png")} // 마커 이미지 설정
+        />
+      </NaverMapView>
 
-      <SafeAreaView>
+      {/* SafeAreaView는 바텀 시트 안에만 적용 */}
+      <View
+        style={{
+          position: "relative",
+          flex: 1,
+          width: "100%",
+          height: "min-content",
+        }}
+      >
         <BottomSheet
           ref={bottomSheetRef}
-          index={0} // 초기 상태를 0으로 설정하여 바텀시트가 열리도록 함
-          snapPoints={snapPoints} // 최소 높이부터 시작하도록 설정
-          enablePanDownToClose={false} // 드래그로 완전히 닫히는 것 방지
-          handleIndicatorStyle={{ backgroundColor: "#fff" }}
-          backdropComponent={renderBackdrop}
+          index={0}
+          snapPoints={snapPoints}
+          enablePanDownToClose={false} // 완전히 닫히지 않도록 설정
+          handleIndicatorStyle={{ backgroundColor: "#000" }}
+          backdropComponent={null} // Backdrop을 제거
+          enableOverDrag={false} // 위로 드래그할 수 없도록 방지
+          enableContentPanningGesture={true} // 바텀 시트 내용에 대한 팬 제스처 허용
+          onChange={handleSheetChanges} // 바텀시트 상태 변경 핸들러 추가
         >
-          {renderContent()}
+          <SafeAreaView style={styles.bottomSheetContent}>
+            {renderContent()}
+          </SafeAreaView>
         </BottomSheet>
-      </SafeAreaView>
+
+        {/* "현재 위치로 이동" 버튼 */}
+        {!isSheetFullyOpen && locationPermission && (
+          <Pressable
+            onPress={moveToCurrentLocation}
+            style={[styles.locationButton, { bottom: MIN_SHEET_HEIGHT + 16 }]} // 바텀시트 16px 위에 위치
+          >
+            <Image
+              source={require("../assets/images/maps/moveMyLocation.png")}
+              style={styles.locationButtonImage}
+              resizeMode="contain"
+            />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
@@ -224,5 +267,25 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 16,
     marginBottom: 20,
+  },
+  locationButton: {
+    position: "absolute",
+    right: 16,
+    backgroundColor: "#fff",
+    borderRadius: 999,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 10,
+    height: 44,
+    width: 44,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  locationButtonImage: {
+    width: 44,
+    height: 44,
   },
 });

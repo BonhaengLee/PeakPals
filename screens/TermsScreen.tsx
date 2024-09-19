@@ -14,7 +14,6 @@ import { RootStackScreenProps } from "../navigation/types";
 import { Feather } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetModalProvider,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 
@@ -23,11 +22,7 @@ import { supabase } from "../utils/supabase";
 import { TABLES } from "../constants/supabase";
 import { TERMS_AGREEMENT_LIST } from "../constants/termsAgreement";
 
-interface TermsScreenProps {
-  navigation: RootStackScreenProps<"Terms">["navigation"];
-}
-
-export default function TermsScreen({ navigation }: TermsScreenProps) {
+export default function TermsScreen() {
   const [agreeAll, setAgreeAll] = useState(false);
   const [agreeService, setAgreeService] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
@@ -123,8 +118,13 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
 
   const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
-  const handleClosePress = () => bottomSheetRef.current?.close();
-  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleClosePress = () => {
+    bottomSheetRef.current?.close();
+  };
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.open();
+  };
+
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -144,151 +144,149 @@ export default function TermsScreen({ navigation }: TermsScreenProps) {
   );
 
   return (
-    <BottomSheetModalProvider>
-      <View style={styles.container}>
-        {/* 행온 서비스 이용 동의 페이지 */}
-        <Text style={styles.title}>서비스 이용 동의</Text>
+    <View style={styles.container}>
+      {/* 행온 서비스 이용 동의 페이지 */}
+      <Text style={styles.title}>서비스 이용 동의</Text>
 
-        {/* 약관 전체 동의 */}
-        <View style={styles.checkboxContainer}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.touchableCheckbox,
-              pressed && { opacity: 0.7 },
-            ]}
-            onPress={() => handleAgreeAll(!agreeAll)}
-          >
-            <View style={styles.checkboxWrapper}>
-              <CheckBox
-                value={agreeAll}
-                onValueChange={handleAgreeAll}
-                style={styles.checkbox}
-                color={agreeAll ? colors.primary : undefined}
-              />
-              <Text style={styles.label}>약관 전체 동의</Text>
-            </View>
-          </Pressable>
-
-          <Feather
-            style={styles.feather}
-            name="chevron-right"
-            size={24}
-            color="white"
-            onPress={() => openBottomSheet("약관 전체 동의 내용")}
-          />
-        </View>
-
-        <View style={styles.separator} />
-
-        {/* (필수) 서비스 이용약관 */}
-        <View style={styles.checkboxContainer}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.touchableCheckbox,
-              pressed && { opacity: 0.7 },
-            ]}
-            onPress={() => setAgreeService(!agreeService)}
-          >
-            <View style={styles.checkboxWrapper}>
-              <CheckBox
-                value={agreeService}
-                onValueChange={(newValue) => setAgreeService(newValue)}
-                style={styles.checkbox}
-                color={agreeService ? colors.primary : undefined}
-              />
-              <Text style={styles.label}>(필수) 서비스 이용약관</Text>
-            </View>
-          </Pressable>
-
-          <Feather
-            style={styles.feather}
-            name="chevron-right"
-            size={24}
-            color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.SERVICE)}
-          />
-        </View>
-
-        {/* (필수) 개인정보 처리 방침 */}
-        <View style={styles.checkboxContainer}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.touchableCheckbox,
-              pressed && { opacity: 0.7 },
-            ]}
-            onPress={() => setAgreePrivacy(!agreePrivacy)}
-          >
-            <View style={styles.checkboxWrapper}>
-              <CheckBox
-                value={agreePrivacy}
-                onValueChange={(newValue) => setAgreePrivacy(newValue)}
-                style={styles.checkbox}
-                color={agreePrivacy ? colors.primary : undefined}
-              />
-              <Text style={styles.label}>(필수) 개인정보 처리 방침</Text>
-            </View>
-          </Pressable>
-
-          <Feather
-            style={styles.feather}
-            name="chevron-right"
-            size={24}
-            color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.PRIVACY)}
-          />
-        </View>
-
-        {/* (선택) 마케팅 정보 수신 동의 */}
-        <View style={styles.checkboxContainer}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.touchableCheckbox,
-              pressed && { opacity: 0.7 },
-            ]}
-            onPress={() => setAgreeMarketing(!agreeMarketing)}
-          >
-            <View style={styles.checkboxWrapper}>
-              <CheckBox
-                value={agreeMarketing}
-                onValueChange={(newValue) => setAgreeMarketing(newValue)}
-                style={styles.checkbox}
-                color={agreeMarketing ? colors.primary : undefined}
-              />
-              <Text style={styles.label}>(선택) 마케팅 정보 수신 동의</Text>
-            </View>
-          </Pressable>
-
-          <Feather
-            style={styles.feather}
-            name="chevron-right"
-            size={24}
-            color="white"
-            onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.MARKETING)}
-          />
-        </View>
-
-        {/* 다음으로 이동 버튼 */}
+      {/* 약관 전체 동의 */}
+      <View style={styles.checkboxContainer}>
         <Pressable
-          style={({ pressed }) => [styles.button, pressed && { opacity: 0.7 }]}
-          onPress={handleSubmit}
+          style={({ pressed }) => [
+            styles.touchableCheckbox,
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => handleAgreeAll(!agreeAll)}
         >
-          <Text style={styles.buttonText}>다음</Text>
+          <View style={styles.checkboxWrapper}>
+            <CheckBox
+              value={agreeAll}
+              onValueChange={handleAgreeAll}
+              style={styles.checkbox}
+              color={agreeAll ? colors.primary : undefined}
+            />
+            <Text style={styles.label}>약관 전체 동의</Text>
+          </View>
         </Pressable>
 
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={-1}
-          snapPoints={snapPoints}
-          enablePanDownToClose={true}
-          handleIndicatorStyle={{ backgroundColor: "#fff" }}
-          backdropComponent={renderBackdrop}
-        >
-          {renderContent()}
-        </BottomSheet>
-
-        <StatusBar style="auto" />
+        <Feather
+          style={styles.feather}
+          name="chevron-right"
+          size={24}
+          color="white"
+          onPress={() => openBottomSheet("약관 전체 동의 내용")}
+        />
       </View>
-    </BottomSheetModalProvider>
+
+      <View style={styles.separator} />
+
+      {/* (필수) 서비스 이용약관 */}
+      <View style={styles.checkboxContainer}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.touchableCheckbox,
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => setAgreeService(!agreeService)}
+        >
+          <View style={styles.checkboxWrapper}>
+            <CheckBox
+              value={agreeService}
+              onValueChange={(newValue) => setAgreeService(newValue)}
+              style={styles.checkbox}
+              color={agreeService ? colors.primary : undefined}
+            />
+            <Text style={styles.label}>(필수) 서비스 이용약관</Text>
+          </View>
+        </Pressable>
+
+        <Feather
+          style={styles.feather}
+          name="chevron-right"
+          size={24}
+          color="white"
+          onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.SERVICE)}
+        />
+      </View>
+
+      {/* (필수) 개인정보 처리 방침 */}
+      <View style={styles.checkboxContainer}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.touchableCheckbox,
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => setAgreePrivacy(!agreePrivacy)}
+        >
+          <View style={styles.checkboxWrapper}>
+            <CheckBox
+              value={agreePrivacy}
+              onValueChange={(newValue) => setAgreePrivacy(newValue)}
+              style={styles.checkbox}
+              color={agreePrivacy ? colors.primary : undefined}
+            />
+            <Text style={styles.label}>(필수) 개인정보 처리 방침</Text>
+          </View>
+        </Pressable>
+
+        <Feather
+          style={styles.feather}
+          name="chevron-right"
+          size={24}
+          color="white"
+          onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.PRIVACY)}
+        />
+      </View>
+
+      {/* (선택) 마케팅 정보 수신 동의 */}
+      <View style={styles.checkboxContainer}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.touchableCheckbox,
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => setAgreeMarketing(!agreeMarketing)}
+        >
+          <View style={styles.checkboxWrapper}>
+            <CheckBox
+              value={agreeMarketing}
+              onValueChange={(newValue) => setAgreeMarketing(newValue)}
+              style={styles.checkbox}
+              color={agreeMarketing ? colors.primary : undefined}
+            />
+            <Text style={styles.label}>(선택) 마케팅 정보 수신 동의</Text>
+          </View>
+        </Pressable>
+
+        <Feather
+          style={styles.feather}
+          name="chevron-right"
+          size={24}
+          color="white"
+          onPress={() => openBottomSheet(TERMS_AGREEMENT_LIST.MARKETING)}
+        />
+      </View>
+
+      {/* 다음으로 이동 버튼 */}
+      <Pressable
+        style={({ pressed }) => [styles.button, pressed && { opacity: 0.7 }]}
+        onPress={handleSubmit}
+      >
+        <Text style={styles.buttonText}>다음</Text>
+      </Pressable>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        handleIndicatorStyle={{ backgroundColor: "#fff" }}
+        backdropComponent={renderBackdrop}
+      >
+        {renderContent()}
+      </BottomSheet>
+
+      <StatusBar style="auto" />
+    </View>
   );
 }
 

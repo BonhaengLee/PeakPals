@@ -15,6 +15,7 @@ import {
   Pressable,
   SafeAreaView,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import {
   NaverMapView,
@@ -24,6 +25,7 @@ import {
 import * as Location from "expo-location";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
+import { ClimbingCenter } from "../types";
 import { supabase } from "../lib/supabaseClient";
 
 // MainTabs 높이 + 40px을 계산
@@ -112,8 +114,22 @@ export default function HomeScreen() {
     null
   );
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [isSheetFullyOpen, setIsSheetFullyOpen] = useState(false); // 바텀시트 열린 상태
+  const [sheetIndex, setSheetIndex] = useState(0);
+
   const mapViewRef = useRef<NaverMapViewRef>(null);
+
+  const moveToCurrentLocation = () => {
+    if (location && mapViewRef.current) {
+      mapViewRef.current.animateCameraTo({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        zoom: 16,
+        duration: 800,
+      });
+    } else {
+      console.error("mapViewRef is not initialized");
+    }
+  };
 
   useEffect(() => {
     const initializeLocation = async () => {
@@ -134,30 +150,52 @@ export default function HomeScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => [MIN_SHEET_HEIGHT, "50%", "90%"], []);
 
-  const moveToCurrentLocation = () => {
-    if (location && mapViewRef.current) {
-      mapViewRef.current.animateCameraTo({
-        latitude: location.latitude,
-        longitude: location.longitude,
-        zoom: 16,
-        duration: 800,
-      });
-    } else {
-      console.error("mapViewRef is not initialized");
-    }
-  };
+  const handleSheetChanges = useCallback((index: number) => {
+    setSheetIndex(index);
+  }, []);
 
   const renderContent = () => (
     <BottomSheetScrollView contentContainerStyle={styles.bottomSheetContent}>
-      <Text style={styles.modalText}>바텀 시트 내용</Text>
+      <Text style={styles.modalText}>
+        바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트 내용바텀 시트
+        내용바텀 시트 내용바텀 시트 내용바텀 시트 내용
+      </Text>
     </BottomSheetScrollView>
   );
 
-  // 바텀시트 상태 변경 시 호출되는 함수
-  const handleSheetChanges = useCallback((index: number) => {
-    // 바텀시트가 완전히 열렸는지 여부 업데이트
-    setIsSheetFullyOpen(index === 2); // index가 2이면 완전히 열린 상태
+  const [centers, setCenters] = useState<ClimbingCenter[]>([]); // Supabase에서 가져온 센터 데이터
+  useEffect(() => {
+    const fetchCenters = async () => {
+      const { data, error } = await supabase.from("ClimbingCenter").select("*");
+      if (error) {
+        console.error("Error fetching centers:", error);
+      } else {
+        setCenters(data || []);
+      }
+    };
+    fetchCenters();
   }, []);
+
+  const handleCenterMarkerClick = (centerId: number) => {
+    // 센터 ID를 기반으로 해당 센터 페이지로 이동하는 로직
+    // 여기서 라우팅 처리
+    console.log("센터 선택됨, ID:", centerId);
+    // 필요 시 네비게이션 추가
+  };
+
+  const renderHandle = useCallback(
+    () => (
+      <View style={styles.bottomSheetHandle}>
+        <View style={styles.handleBar} />
+      </View>
+    ),
+    []
+  );
 
   if (!location) {
     return (
@@ -172,7 +210,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* 지도는 SafeAreaView 밖에서 터치 가능하도록 배치 */}
+      {/* 지도 */}
       <NaverMapView
         ref={mapViewRef}
         style={styles.map}
@@ -182,56 +220,62 @@ export default function HomeScreen() {
           zoom: 16,
         }}
       >
-        {/* 현재 위치 마커 */}
         <NaverMapMarkerOverlay
           latitude={location.latitude}
           longitude={location.longitude}
-          width={24} // 마커의 크기 조절
+          width={24}
           height={24}
-          anchor={{ x: 0.5, y: 1 }} // 마커의 위치 조정
-          image={require("../assets/images/maps/myLocationPoint.png")} // 마커 이미지 설정
+          anchor={{ x: 0.5, y: 1 }}
+          image={require("../assets/images/maps/me.png")}
         />
+        {centers.map((center) => (
+          <NaverMapMarkerOverlay
+            key={center.id}
+            latitude={center.latitude}
+            longitude={center.longitude}
+            width={32}
+            height={32}
+            anchor={{ x: 0.5, y: 1 }}
+            image={require("../assets/images/maps/center.png")}
+            onClick={() => handleCenterMarkerClick(center.id)}
+          />
+        ))}
       </NaverMapView>
 
-      {/* SafeAreaView는 바텀 시트 안에만 적용 */}
-      <View
-        style={{
-          position: "relative",
-          flex: 1,
-          width: "100%",
-          height: "min-content",
-        }}
-      >
+      <View style={styles.bottomSheetContainer} pointerEvents="box-none">
         <BottomSheet
           ref={bottomSheetRef}
           index={0}
           snapPoints={snapPoints}
-          enablePanDownToClose={false} // 완전히 닫히지 않도록 설정
-          handleIndicatorStyle={{ backgroundColor: "#000" }}
-          backdropComponent={null} // Backdrop을 제거
-          enableOverDrag={false} // 위로 드래그할 수 없도록 방지
-          enableContentPanningGesture={true} // 바텀 시트 내용에 대한 팬 제스처 허용
-          onChange={handleSheetChanges} // 바텀시트 상태 변경 핸들러 추가
+          enablePanDownToClose={false}
+          backdropComponent={null}
+          /* 
+          바텀시트가 전체 높이까지 열릴 수 있으면서도, 
+          바텀시트가 닫혀있거나 부분적으로 열려있을 때 지도와의 인터랙션 가능
+          바텀시트는 핸들 영역이나 내부 컨텐츠를 통해서만 드래그할 수 있게 됩니다. 
+          */
+          handleComponent={renderHandle}
+          enableOverDrag={false}
+          enableContentPanningGesture={true}
+          onChange={handleSheetChanges}
         >
-          <SafeAreaView style={styles.bottomSheetContent}>
-            {renderContent()}
-          </SafeAreaView>
+          <View style={styles.bottomSheetContent}>{renderContent()}</View>
         </BottomSheet>
-
-        {/* "현재 위치로 이동" 버튼 */}
-        {!isSheetFullyOpen && locationPermission && (
-          <Pressable
-            onPress={moveToCurrentLocation}
-            style={[styles.locationButton, { bottom: MIN_SHEET_HEIGHT + 16 }]} // 바텀시트 16px 위에 위치
-          >
-            <Image
-              source={require("../assets/images/maps/moveMyLocation.png")}
-              style={styles.locationButtonImage}
-              resizeMode="contain"
-            />
-          </Pressable>
-        )}
       </View>
+
+      {/* "현재 위치로 이동" 버튼 */}
+      {sheetIndex === 0 && locationPermission && (
+        <Pressable
+          onPress={moveToCurrentLocation}
+          style={[styles.locationButton, { bottom: MIN_SHEET_HEIGHT + 16 }]}
+        >
+          <Image
+            source={require("../assets/images/maps/moveMyLocation.png")}
+            style={styles.locationButtonImage}
+            resizeMode="contain"
+          />
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -241,6 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    position: "relative", // 최상위 컨테이너로 설정
   },
   map: {
     width: "100%",
@@ -249,28 +294,42 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  loadingText: {
-    fontSize: 18,
-    color: "darkgray",
-    textAlign: "center",
-    marginBottom: 20,
-  },
   bottomSheetContent: {
     padding: 20,
+    height: "100%",
+  },
+  bottomSheetContainer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: "100%",
+    zIndex: 2,
+  },
+  bottomSheetHandle: {
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  handleBar: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#00000040",
+    borderRadius: 2,
   },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
+    color: "red",
+    fontSize: 46,
   },
   locationButton: {
     position: "absolute",
     right: 16,
+    bottom: MIN_SHEET_HEIGHT + 16, // 바텀시트 위 16px에 위치
     backgroundColor: "#fff",
     borderRadius: 999,
     shadowColor: "#000",
@@ -278,7 +337,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    zIndex: 10,
+    zIndex: 0,
     height: 44,
     width: 44,
     justifyContent: "center",
@@ -287,5 +346,14 @@ const styles = StyleSheet.create({
   locationButtonImage: {
     width: 44,
     height: 44,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 16,
+    marginBottom: 20,
   },
 });

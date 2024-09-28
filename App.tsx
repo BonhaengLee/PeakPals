@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { AppRegistry, StyleSheet, Text, Pressable } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  Pressable,
+  StatusBar,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Session } from "@supabase/supabase-js";
@@ -18,6 +27,7 @@ import HomeScreen from "./screens/HomeScreen";
 import MyPageScreen from "./screens/MyPageScreen";
 import { TABLES, USER_FIELDS } from "./constants/supabase";
 import { colors } from "./styles/colors";
+import CenterSearchScreen from "./screens/CenterSearchScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -179,49 +189,61 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <NavigationContainer>
-              <Stack.Navigator initialRouteName={initialRoute}>
-                {session ? (
-                  <>
+    <>
+      <StatusBar
+        barStyle="light-content"
+        translucent={true}
+        backgroundColor="transparent"
+      />
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <NavigationContainer>
+                <Stack.Navigator initialRouteName={initialRoute}>
+                  {session ? (
+                    <>
+                      <Stack.Screen
+                        name="HomeStack"
+                        component={HomeStack}
+                        options={{ headerShown: false }}
+                      />
+                      <Stack.Screen
+                        name="Terms"
+                        component={TermsScreen}
+                        options={{ headerShown: false }}
+                      />
+                      <Stack.Screen
+                        name="Profile"
+                        component={ProfileScreen}
+                        options={{ headerShown: false }}
+                      />
+                    </>
+                  ) : (
                     <Stack.Screen
-                      name="HomeStack"
-                      component={HomeStack}
+                      name="Login"
+                      component={LoginScreen}
                       options={{ headerShown: false }}
                     />
-                    <Stack.Screen
-                      name="Terms"
-                      component={TermsScreen}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Profile"
-                      component={ProfileScreen}
-                      options={{ headerShown: false }}
-                    />
-                  </>
-                ) : (
-                  <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                )}
-              </Stack.Navigator>
-            </NavigationContainer>
-          </BottomSheetModalProvider>
-        </SafeAreaView>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+                  )}
+                </Stack.Navigator>
+              </NavigationContainer>
+            </BottomSheetModalProvider>
+          </SafeAreaView>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </>
   );
 }
 
 function HomeStack() {
   return (
-    <Stack.Navigator initialRouteName="MainTabs">
+    <Stack.Navigator
+      initialRouteName="MainTabs"
+      screenOptions={{
+        headerMode: "screen", // 스크린 별로 헤더를 각각 관리하도록 설정
+      }}
+    >
       <Stack.Screen
         name="MainTabs"
         component={MainTabs}
@@ -241,6 +263,44 @@ function HomeStack() {
         name="Home"
         component={HomeScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CenterSearch"
+        component={CenterSearchScreen} // 검색 화면 추가
+        options={{
+          title: "센터 검색",
+          headerShown: false,
+          gestureDirection: "vertical", // 스와이프 제스처 방향 설정 (아래에서 위)
+          cardStyleInterpolator:
+            TransitionPresets.ModalSlideFromBottomIOS.cardStyleInterpolator, // 아래에서 위로 열리는 애니메이션 적용
+          transitionSpec: {
+            open: {
+              animation: "timing",
+              config: {
+                duration: 10, // 열리는 애니메이션 속도 (ms 단위, 기본 500ms)
+              },
+            },
+            close: {
+              animation: "timing",
+              config: {
+                duration: 10, // 닫히는 애니메이션 속도
+              },
+            },
+          },
+          // !: Nested Screen Header
+          // headerShown: true,
+          // headerStyle: {
+          //   backgroundColor: colors.backgroundBlack,
+          //   height: 56,
+          // },
+          // headerTintColor: colors.white1000,
+          // headerTitleStyle: {
+          //   fontSize: 18,
+          //   fontWeight: "bold",
+          // },
+          // headerTitleAlign: "center",
+          // headerStatusBarHeight: 0, // 상태바 높이를 0으로 설정하여 추가 여백 제거
+        }}
       />
     </Stack.Navigator>
   );

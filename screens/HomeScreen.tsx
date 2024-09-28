@@ -40,13 +40,18 @@ import {
   startTrackingLocation,
 } from "../lib/find-center/locationUtils";
 import CenterSearchBar from "../components/find-center/CenterSearchBar";
+import { RootStackScreenProps } from "../navigation/types";
 
 // MainTabs 높이 + 40px
 const MAIN_TABS_HEIGHT = 92;
 // 항상 최소한 이 높이까지만 내려가게 함
 const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40;
 
-export default function HomeScreen() {
+interface HomeScreenProps {
+  navigation: RootStackScreenProps<"Home">["navigation"];
+}
+
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -204,6 +209,7 @@ export default function HomeScreen() {
         searchTerm={searchTerm}
         onSearchTermChange={setSearchTerm}
         onSearchSubmit={handleSearchSubmit}
+        onClick={() => navigation.navigate("CenterSearch")}
       />
 
       {/* 지도 */}

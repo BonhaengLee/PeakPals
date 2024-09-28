@@ -29,6 +29,7 @@ import {
 import { supabase } from "../lib/supabaseClient";
 import { ClimbingCenter, SimplifiedCenter } from "../types";
 import { colors } from "../styles/colors";
+import { RenderLocationError } from "../components/RenderLocationError";
 
 // MainTabs 높이 + 40px을 계산
 const MAIN_TABS_HEIGHT = 92; // MainTabs의 높이
@@ -367,13 +368,36 @@ export default function HomeScreen() {
     />
   );
 
-  if (!location) {
+  const initializeLocation = async () => {
+    const isServiceEnabled = await checkIfLocationServicesEnabled();
+    if (!isServiceEnabled) return;
+
+    const hasPermission = await requestLocationPermission(
+      setLocationPermission
+    );
+    if (hasPermission) {
+      startTrackingLocation(setLocation, setLocationError);
+    }
+  };
+
+  useEffect(() => {
+    initializeLocation(); // 처음 로드될 때 위치 정보 요청
+  }, []);
+
+  if (locationError) {
+    return (
+      <RenderLocationError
+        locationError={locationError}
+        retryFunction={initializeLocation} // 여기서 재시도 시 initializeLocation을 다시 호출
+      />
+    );
+  }
+
+  if (!location && locationPermission !== null) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>
-          {locationError || "현재 위치를 가져오는 중입니다..."}
-        </Text>
         <ActivityIndicator size="large" color="gray" />
+        <Text style={styles.loadingText}>위치 정보를 가져오는 중입니다...</Text>
       </View>
     );
   }
@@ -385,19 +409,23 @@ export default function HomeScreen() {
         ref={mapViewRef}
         style={styles.map}
         center={{
-          latitude: location.latitude,
-          longitude: location.longitude,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
           zoom: 16,
         }}
       >
-        <NaverMapMarkerOverlay
-          latitude={location.latitude}
-          longitude={location.longitude}
-          width={24}
-          height={24}
-          anchor={{ x: 0.5, y: 1 }}
-          image={require("../assets/images/maps/me.png")}
-        />
+        {/* 내 위치 - location 없으면 제외 */}
+        {location ? (
+          <NaverMapMarkerOverlay
+            latitude={location?.latitude ?? 0}
+            longitude={location?.longitude ?? 0}
+            width={24}
+            height={24}
+            anchor={{ x: 0.5, y: 1 }}
+            image={require("../assets/images/maps/me.png")}
+          />
+        ) : null}
+
         {centers.map((center) => (
           <NaverMapMarkerOverlay
             key={center.id}
@@ -420,9 +448,9 @@ export default function HomeScreen() {
           enablePanDownToClose={false}
           backdropComponent={null}
           /* 
-          바텀시트가 전체 높이까지 열릴 수 있으면서도, 
-          바텀시트가 닫혀있거나 부분적으로 열려있을 때 지도와의 인터랙션 가능
-          바텀시트는 핸들 영역이나 내부 컨텐츠를 통해서만 드래그할 수 있게 됩니다. 
+              바텀시트가 전체 높이까지 열릴 수 있으면서도, 
+              바텀시트가 닫혀있거나 부분적으로 열려있을 때 지도와의 인터랙션 가능
+              바텀시트는 핸들 영역이나 내부 컨텐츠를 통해서만 드래그 가능
           */
           handleComponent={renderHandle}
           enableOverDrag={false}
@@ -503,7 +531,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: "red",
-    fontSize: 46,
     height: "100%",
   },
   locationButton: {

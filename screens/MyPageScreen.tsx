@@ -61,13 +61,13 @@ const MyPageScreen = () => {
           .createSignedUrl(profile.avatar_url, 60);
 
         if (avatarError) {
-          console.error("Error fetching avatar URL:", avatarError.message);
+          console.log("Error fetching avatar URL:", avatarError.message);
         }
 
         setProfile({
           name: `${profile.nickname}님`,
           message: profile.message,
-          profileImage: avatarData?.signedUrl || "",
+          profileImage: avatarData?.signedUrl || null,
           badgeCount: profile.badge_count || 0,
           hangonCount: profile.hangon_count || 0,
         });
@@ -128,10 +128,15 @@ const MyPageScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileSection}>
-        <Image
-          source={{ uri: profile.profileImage }}
-          style={styles.profileImage}
-        />
+        {profile.profileImage ? (
+          <Image
+            source={{ uri: profile.profileImage }}
+            style={styles.profileImage}
+          />
+        ) : (
+          <View style={styles.profileImage} />
+        )}
+
         <View style={styles.profileTextSection}>
           <Text style={styles.name}>{profile.name}</Text>
           <Text style={styles.message}>{profile.message}</Text>

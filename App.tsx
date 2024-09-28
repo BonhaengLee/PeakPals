@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AppRegistry, StyleSheet, Text, Pressable } from "react-native";
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Session } from "@supabase/supabase-js";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { supabase } from "./utils/supabase";
 import LoginScreen from "./screens/LoginScreen";
@@ -22,19 +19,10 @@ import MyPageScreen from "./screens/MyPageScreen";
 import { TABLES, USER_FIELDS } from "./constants/supabase";
 import { colors } from "./styles/colors";
 
-import { WebView } from "react-native-webview";
-import { Platform } from "react-native";
-
-// if (Platform.OS === "android") {
-//   WebView.setWebContentsDebuggingEnabled(true);
-// }
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs() {
-  // const homeScreenRef = useRef<{ reloadWebView: () => void } | null>(null);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -90,8 +78,8 @@ function MainTabs() {
         tabBarStyle: [
           styles.tabBar,
           {
-            paddingBottom: 24, // 안전한 하단 패딩 추가
-            height: 60 + 32, // 하단 패딩을 고려한 높이
+            paddingBottom: 24,
+            height: 60 + 32,
           },
         ],
         tabBarItemStyle: styles.tabItem,
@@ -194,35 +182,37 @@ export default function App() {
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName={initialRoute}>
-              {session ? (
-                <>
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName={initialRoute}>
+                {session ? (
+                  <>
+                    <Stack.Screen
+                      name="HomeStack"
+                      component={HomeStack}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Terms"
+                      component={TermsScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Profile"
+                      component={ProfileScreen}
+                      options={{ headerShown: false }}
+                    />
+                  </>
+                ) : (
                   <Stack.Screen
-                    name="HomeStack"
-                    component={HomeStack}
+                    name="Login"
+                    component={LoginScreen}
                     options={{ headerShown: false }}
                   />
-                  <Stack.Screen
-                    name="Terms"
-                    component={TermsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={{ headerShown: false }}
-                  />
-                </>
-              ) : (
-                <Stack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  options={{ headerShown: false }}
-                />
-              )}
-            </Stack.Navigator>
-          </NavigationContainer>
+                )}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </BottomSheetModalProvider>
         </SafeAreaView>
       </GestureHandlerRootView>
     </SafeAreaProvider>

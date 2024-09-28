@@ -30,160 +30,16 @@ import { supabase } from "../lib/supabaseClient";
 import { ClimbingCenter, SimplifiedCenter } from "../types";
 import { colors } from "../styles/colors";
 import { RenderLocationError } from "../components/RenderLocationError";
+import { SegmentedControl } from "../components/find-center/SegmentedControl";
+import {
+  renderNearbyCenters,
+  renderSavedCenters,
+} from "../components/find-center/CenterList";
+import { nearbyCenters, savedCenters } from "../mock/data";
 
 // MainTabs 높이 + 40px을 계산
 const MAIN_TABS_HEIGHT = 92; // MainTabs의 높이
 const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40; // 항상 최소한 이 높이까지만 내려가게 함
-
-interface SavedCenter extends SimplifiedCenter {
-  isSaved: boolean;
-  // 각 유저별로 다른 값을 가져야 함
-  visitCount: number;
-}
-
-// FIXME: mock data
-const savedCenters: SavedCenter[] = [
-  {
-    id: 1,
-    name: "클라이밍 센터 1",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 12,
-    isSaved: true,
-  },
-  {
-    id: 2,
-    name: "클라이밍 센터 2",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 12,
-    isSaved: true,
-  },
-  {
-    id: 3,
-    name: "클라이밍 센터 3",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 12,
-    isSaved: false,
-  },
-  {
-    id: 4,
-    name: "클라이밍 센터 4",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 122,
-    isSaved: false,
-  },
-  {
-    id: 5,
-    name: "클라이밍 센터 5",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 132,
-    isSaved: false,
-  },
-  {
-    id: 6,
-    name: "클라이밍 센터 6",
-    address: "서울특별시 강남구 테헤란로 123",
-    visitCount: 412,
-    isSaved: false,
-  },
-];
-
-// mock nearby centers
-const nearbyCenters: SimplifiedCenter[] = [
-  {
-    id: 4,
-    name: "내 주변 센터 1",
-    address: "서울특별시 강남구 역삼동 456",
-  },
-  {
-    id: 5,
-    name: "내 주변 센터 2",
-    address: "서울특별시 강남구 논현동 789",
-  },
-  {
-    id: 6,
-    name: "내 주변 센터 3",
-    address: "서울특별시 강남구 삼성동 123",
-  },
-];
-
-const renderSavedCenters = (centers: SavedCenter[]) => {
-  return centers.map((center, index) => (
-    <View key={index} style={styles.centerContainer}>
-      <View>
-        <Text style={styles.centerName}>{center.name}</Text>
-        <Text style={styles.centerAddress}>{center.address}</Text>
-        <View style={styles.visitCountContainer}>
-          <Text style={styles.visitCountText}>{center.visitCount}번 방문</Text>
-        </View>
-      </View>
-      <Image
-        style={styles.starIcon}
-        source={require("../assets/images/maps/filledStar.png")}
-      />
-    </View>
-  ));
-};
-
-const renderNearbyCenters = (centers: SimplifiedCenter[]) => {
-  return centers.map((center, index) => (
-    <View key={index} style={styles.centerContainer}>
-      <View>
-        <Text style={styles.centerName}>{center.name}</Text>
-        <Text style={styles.centerAddress}>{center.address}</Text>
-        {/* FIXME: Uncomment when ready to implement
-        <Text style={styles.openStatus}>영업중 XX</Text>
-        */}
-      </View>
-    </View>
-  ));
-};
-
-const renderSegmentedControl = ({
-  activeTab,
-  setActiveTab,
-}: {
-  activeTab: string;
-  setActiveTab: Function;
-}) => {
-  return (
-    <View style={styles.segmentedControl}>
-      <Pressable
-        style={[
-          styles.segmentButton,
-          styles.segmentButtonLeft,
-          activeTab === "saved" && styles.activeSegment,
-        ]}
-        onPress={() => setActiveTab("saved")}
-      >
-        <Text
-          style={[
-            styles.segmentButtonText,
-            activeTab === "saved" && styles.activeSegmentText,
-          ]}
-        >
-          저장된 센터
-        </Text>
-      </Pressable>
-      <Pressable
-        style={[
-          styles.segmentButton,
-          styles.segmentButtonRight,
-          activeTab === "nearby" && styles.activeSegment,
-        ]}
-        onPress={() => setActiveTab("nearby")}
-      >
-        <Text
-          style={[
-            styles.segmentButtonText,
-            activeTab === "nearby" && styles.activeSegmentText,
-          ]}
-        >
-          내 주변 센터
-        </Text>
-      </Pressable>
-    </View>
-  );
-};
 
 const checkIfLocationServicesEnabled = async () => {
   const isEnabled = await Location.hasServicesEnabledAsync();
@@ -350,7 +206,8 @@ export default function HomeScreen() {
       <BottomSheetScrollView
         contentContainerStyle={styles.bottomSheetScrollViewContent}
       >
-        {renderSegmentedControl({ activeTab, setActiveTab })}
+        <SegmentedControl activeTab={activeTab} setActiveTab={setActiveTab} />
+
         {renderCenters()}
       </BottomSheetScrollView>
     ),
@@ -388,7 +245,7 @@ export default function HomeScreen() {
     return (
       <RenderLocationError
         locationError={locationError}
-        retryFunction={initializeLocation} // 여기서 재시도 시 initializeLocation을 다시 호출
+        retryFunction={initializeLocation}
       />
     );
   }

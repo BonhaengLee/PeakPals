@@ -17,9 +17,7 @@ import React, {
 } from "react";
 import {
   ActivityIndicator,
-  Alert,
   Image,
-  Linking,
   Pressable,
   StyleSheet,
   Text,
@@ -27,7 +25,7 @@ import {
 } from "react-native";
 
 import { supabase } from "../lib/supabaseClient";
-import { ClimbingCenter, SimplifiedCenter } from "../types";
+import { ClimbingCenter } from "../types";
 import { colors } from "../styles/colors";
 import { RenderLocationError } from "../components/RenderLocationError";
 import { SegmentedControl } from "../components/find-center/SegmentedControl";
@@ -36,85 +34,24 @@ import {
   renderSavedCenters,
 } from "../components/find-center/CenterList";
 import { nearbyCenters, savedCenters } from "../mock/data";
+import {
+  checkIfLocationServicesEnabled,
+  requestLocationPermission,
+  startTrackingLocation,
+} from "../lib/find-center/locationUtils";
+import CenterSearchBar from "../components/find-center/CenterSearchBar";
+import { RootStackScreenProps } from "../navigation/types";
 
-// MainTabs 높이 + 40px을 계산
-const MAIN_TABS_HEIGHT = 92; // MainTabs의 높이
-const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40; // 항상 최소한 이 높이까지만 내려가게 함
+// MainTabs 높이 + 40px
+const MAIN_TABS_HEIGHT = 92;
+// 항상 최소한 이 높이까지만 내려가게 함
+const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40;
 
-const checkIfLocationServicesEnabled = async () => {
-  const isEnabled = await Location.hasServicesEnabledAsync();
-  if (!isEnabled) {
-    Alert.alert(
-      "위치 서비스 비활성화",
-      "위치 서비스가 꺼져 있습니다. 설정에서 활성화해 주세요.",
-      [
-        { text: "설정으로 가기", onPress: () => Linking.openSettings() },
-        { text: "취소", style: "cancel" },
-      ]
-    );
-    return false;
-  }
-  return true;
-};
+interface HomeScreenProps {
+  navigation: RootStackScreenProps<"Home">["navigation"];
+}
 
-const requestLocationPermission = async (setLocationPermission: Function) => {
-  try {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status === "granted") {
-      setLocationPermission(true);
-      return true;
-    } else {
-      Alert.alert(
-        "위치 권한 필요",
-        "위치 권한을 허용해야 이 기능을 사용할 수 있습니다.",
-        [
-          { text: "설정으로 가기", onPress: () => Linking.openSettings() },
-          { text: "취소", style: "cancel" },
-        ]
-      );
-      setLocationPermission(false);
-      return false;
-    }
-  } catch (error) {
-    console.error("위치 권한 요청 실패:", error);
-    setLocationPermission(false);
-    return false;
-  }
-};
-
-const startTrackingLocation = async (
-  setLocation: Function,
-  setLocationError: Function
-) => {
-  try {
-    const currentLocation = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
-    });
-    setLocation({
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
-    });
-
-    Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.High,
-        distanceInterval: 1,
-        timeInterval: 5000,
-      },
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      }
-    );
-  } catch (error) {
-    console.error("위치 정보 에러:", error);
-    setLocationError("위치 정보를 가져오는 중 오류가 발생했습니다.");
-  }
-};
-
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -138,6 +75,12 @@ export default function HomeScreen() {
     } else {
       console.error("mapViewRef is not initialized");
     }
+  };
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearchSubmit = () => {
+    console.log("검색어:", searchTerm);
+    // 검색 기능 처리
   };
 
   useEffect(() => {
@@ -261,6 +204,14 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {/* 검색 바 */}
+      <CenterSearchBar
+        searchTerm={searchTerm}
+        onSearchTermChange={setSearchTerm}
+        onSearchSubmit={handleSearchSubmit}
+        onClick={() => navigation.navigate("CenterSearch")}
+      />
+
       {/* 지도 */}
       <NaverMapView
         ref={mapViewRef}

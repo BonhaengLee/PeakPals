@@ -1,128 +1,178 @@
+import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
+  Text,
   TextInput,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  StatusBar,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { RootStackScreenProps } from "../navigation/types";
+import { climbingCenters } from "../data/climbing-centers";
 import { colors } from "../styles/colors";
 
-interface CenterSearchScreenProps {
-  navigation: RootStackScreenProps<"CenterSearch">["navigation"];
-}
+export default function CenterSearchScreen({ navigation }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredCenters, setFilteredCenters] = useState([]);
 
-export default function CenterSearchScreen({
-  navigation,
-}: CenterSearchScreenProps) {
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = climbingCenters.filter((center) =>
+        center.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredCenters(filtered);
+    } else {
+      setFilteredCenters([]);
+    }
+  }, [searchTerm]);
+
+  const handleCenterSelect = (centerId: number) => {
+    console.log("Selected center ID:", centerId);
+    navigation.goBack(); // 센터 선택 후 이전 화면으로 돌아가기
+  };
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.backButton}>←</Text>
-      </TouchableOpacity>
-      <View style={styles.progressBar}>
-        <View style={styles.progress} />
-      </View>
-      <Text style={styles.title}>마지막으로</Text>
-      <Text style={styles.subtitle}>
-        자주 다니는 클라이밍 센터가 있나요?
-        {"\n"}
-        저희가 실시간으로 소식을 알려 드려요!
-      </Text>
-      <Text style={styles.infoText}>내가 찾는 센터가 없나요?</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="센터 이름 또는 위치 검색"
-          placeholderTextColor={colors.white1000}
+    <>
+      {/* <StatusBar translucent={false} backgroundColor="#070709" /> */}
+
+      {/* <SafeAreaView style={styles.safeArea}> */}
+      <View style={styles.container}>
+        {/* 상단 X 버튼 및 검색바 */}
+        <View style={styles.searchHeader}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.closeButton}
+          >
+            <AntDesign name="close" size={20} color="black" />
+          </TouchableOpacity>
+
+          <View style={styles.searchBarContainer}>
+            <TextInput
+              style={styles.searchInput}
+              value={searchTerm}
+              placeholder="센터명 및 위치 검색"
+              placeholderTextColor="#B6B6B6"
+              onChangeText={setSearchTerm}
+              autoFocus={true}
+            />
+            <Ionicons
+              name="search"
+              size={24}
+              color="white"
+              style={styles.searchIcon}
+            />
+          </View>
+        </View>
+
+        {/* 등록 요청 섹션 */}
+        <View style={styles.registerRequest}>
+          <Text style={styles.registerText}>찾는 장소가 없으신가요?</Text>
+          <TouchableOpacity onPress={() => console.log("등록 요청")}>
+            <Text style={styles.registerButton}>등록 요청</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* 검색 결과 목록 */}
+        <FlatList
+          data={filteredCenters}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleCenterSelect(item.id)}>
+              <View style={styles.centerItem}>
+                <Text style={styles.centerName}>{item.name}</Text>
+                <Text style={styles.centerAddress}>{item.address}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          ListEmptyComponent={() => (
+            <Text style={styles.noResults}>검색 결과가 없습니다</Text>
+          )}
         />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Text style={styles.buttonText}>다음</Text>
-      </TouchableOpacity>
-      {/* <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-        <Text style={styles.skipText}>건너뛰기</Text>
-      </TouchableOpacity> */}
-    </View>
+      {/* </SafeAreaView> */}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#070709", // 배경색을 검은색으로 설정
+    paddingTop: StatusBar.currentHeight,
+  },
   container: {
     flex: 1,
-    backgroundColor: colors.backgroundBlack,
+    backgroundColor: "#070709", // 배경색을 검은색으로 설정
+    padding: 16,
+  },
+  searchHeader: {
+    flexDirection: "row",
     alignItems: "center",
-    padding: 20,
+    marginBottom: 16,
   },
-  backButton: {
-    fontSize: 24,
-    color: colors.white1000,
-    alignSelf: "flex-start",
-    marginBottom: 20,
+  closeButton: {
+    padding: 14,
+    backgroundColor: "#fff",
+    borderRadius: 50,
+    marginRight: 8,
+    height: 48,
+    width: 48,
   },
-  progressBar: {
-    width: "100%",
-    height: 8,
-    backgroundColor: colors.lightGray,
-    borderRadius: 4,
-    overflow: "hidden",
-  },
-  progress: {
-    width: "100%", // progress percentage
-    height: "100%",
-    backgroundColor: colors.primary,
-  },
-  title: {
-    fontSize: 28,
-    color: colors.white1000,
-    marginTop: 40,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: colors.white1000,
-    textAlign: "center",
-    marginVertical: 20,
-  },
-  infoText: {
-    fontSize: 14,
-    color: colors.primary,
-    marginBottom: 20,
-  },
-  inputContainer: {
-    width: "100%",
-    padding: 10,
-    backgroundColor: colors.darkGray,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  input: {
-    color: colors.white1000,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    padding: 15,
-    borderRadius: 25,
+  searchBarContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 50,
-    left: 20,
-    right: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 999,
   },
-  buttonText: {
+  searchInput: {
     color: colors.textBlack,
-    fontSize: 14,
-    fontWeight: "normal",
-    lineHeight: 20,
-    letterSpacing: 0.1,
+    fontSize: 16,
   },
-  skipText: {
-    color: colors.lightGray,
-    position: "absolute",
-    bottom: 20,
+  searchIcon: {
+    marginLeft: 8,
+  },
+  registerRequest: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#1A1A1D",
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  registerText: {
+    color: "white",
+    fontSize: 14,
+  },
+  registerButton: {
+    color: "#D2FA00",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  centerItem: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#333",
+  },
+  centerName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
+  centerAddress: {
+    fontSize: 14,
+    color: "gray",
+  },
+  noResults: {
+    textAlign: "center",
+    color: "gray",
+    marginTop: 20,
   },
 });

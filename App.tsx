@@ -28,6 +28,7 @@ import MyPageScreen from "./screens/MyPageScreen";
 import { TABLES, USER_FIELDS } from "./constants/supabase";
 import { colors } from "./styles/colors";
 import CenterSearchScreen from "./screens/CenterSearchScreen";
+import { MapProvider } from "./context/MapContext";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -199,35 +200,37 @@ export default function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <SafeAreaView style={{ flex: 1 }}>
             <BottomSheetModalProvider>
-              <NavigationContainer>
-                <Stack.Navigator initialRouteName={initialRoute}>
-                  {session ? (
-                    <>
+              <MapProvider>
+                <NavigationContainer>
+                  <Stack.Navigator initialRouteName={initialRoute}>
+                    {session ? (
+                      <>
+                        <Stack.Screen
+                          name="HomeStack"
+                          component={HomeStack}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="Terms"
+                          component={TermsScreen}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="Profile"
+                          component={ProfileScreen}
+                          options={{ headerShown: false }}
+                        />
+                      </>
+                    ) : (
                       <Stack.Screen
-                        name="HomeStack"
-                        component={HomeStack}
+                        name="Login"
+                        component={LoginScreen}
                         options={{ headerShown: false }}
                       />
-                      <Stack.Screen
-                        name="Terms"
-                        component={TermsScreen}
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="Profile"
-                        component={ProfileScreen}
-                        options={{ headerShown: false }}
-                      />
-                    </>
-                  ) : (
-                    <Stack.Screen
-                      name="Login"
-                      component={LoginScreen}
-                      options={{ headerShown: false }}
-                    />
-                  )}
-                </Stack.Navigator>
-              </NavigationContainer>
+                    )}
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </MapProvider>
             </BottomSheetModalProvider>
           </SafeAreaView>
         </GestureHandlerRootView>

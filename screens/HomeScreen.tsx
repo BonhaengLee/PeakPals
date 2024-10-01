@@ -10,6 +10,7 @@ import {
 import * as Location from "expo-location";
 import React, {
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -41,6 +42,7 @@ import {
 } from "../lib/find-center/locationUtils";
 import CenterSearchBar from "../components/find-center/CenterSearchBar";
 import { RootStackScreenProps } from "../navigation/types";
+import { MapContext } from "../context/MapContext";
 
 // MainTabs 높이 + 40px
 const MAIN_TABS_HEIGHT = 92;
@@ -183,6 +185,20 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   useEffect(() => {
     initializeLocation(); // 처음 로드될 때 위치 정보 요청
   }, []);
+
+  // 센터 검색 및 선택 시 이동
+  const { location: centerLocation } = useContext(MapContext);
+
+  useEffect(() => {
+    if (mapViewRef.current) {
+      mapViewRef.current.animateCameraTo({
+        latitude: centerLocation.latitude,
+        longitude: centerLocation.longitude,
+        zoom: 16,
+        duration: 800,
+      });
+    }
+  }, [centerLocation]);
 
   if (locationError) {
     return (

@@ -20,8 +20,14 @@ export const RenderLocationError = ({
         {locationError || "현재 위치를 가져오는 중입니다..."}
       </Text>
       {locationError && (
-        <Pressable onPress={retryFunction} style={styles.retryButton}>
-          <Text style={styles.retryButtonText}>다시 시도</Text>
+        <Pressable
+          onPress={() => {
+            console.log("다시 시도 버튼 클릭됨");
+            retryFunction();
+          }}
+          style={styles.retryButton}
+        >
+          <Text style={styles.retryButtonText}>다시 시도dafsdasdf</Text>
         </Pressable>
       )}
       {!locationError && <ActivityIndicator size="large" color="gray" />}

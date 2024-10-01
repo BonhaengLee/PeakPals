@@ -46,13 +46,14 @@ export default function CenterSearchScreen({ navigation }) {
     fetchCenters();
   }, []);
 
-  const { updateLocation } = useContext(MapContext);
+  const { updateLocation, setSelectedCenter } = useContext(MapContext);
 
   const handleCenterSelect = (centerId: number) => {
     const selectedCenter = sbCenters.find((center) => center.id === centerId);
-
     if (selectedCenter) {
       updateLocation(selectedCenter.latitude, selectedCenter.longitude);
+      setSelectedCenter(selectedCenter); // 선택된 센터 저장
+      console.log("selectedCenter", selectedCenter);
       navigation.goBack();
     }
   };

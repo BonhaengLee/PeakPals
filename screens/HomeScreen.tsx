@@ -1,13 +1,8 @@
-import BottomSheet, {
-  BottomSheetBackgroundProps,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
 import {
   NaverMapMarkerOverlay,
   NaverMapView,
   NaverMapViewRef,
 } from "@mj-studio/react-native-naver-map";
-import * as Location from "expo-location";
 import React, {
   useCallback,
   useContext,
@@ -29,7 +24,6 @@ import { supabase } from "../lib/supabaseClient";
 import { ClimbingCenter } from "../types";
 import { colors } from "../styles/colors";
 import { RenderLocationError } from "../components/RenderLocationError";
-import { SegmentedControl } from "../components/find-center/SegmentedControl";
 import {
   renderNearbyCenters,
   renderSavedCenters,
@@ -43,11 +37,13 @@ import {
 import CenterSearchBar from "../components/find-center/CenterSearchBar";
 import { RootStackScreenProps } from "../navigation/types";
 import { MapContext } from "../context/MapContext";
+import BottomSheetComponent from "../components/find-center/BottomSheetComponent";
+import MapViewComponent from "../components/find-center/MapViewComponent";
 
 // MainTabs 높이 + 40px
 const MAIN_TABS_HEIGHT = 92;
 // 항상 최소한 이 높이까지만 내려가게 함
-const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40;
+export const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40;
 
 interface HomeScreenProps {
   navigation: RootStackScreenProps<"Home">["navigation"];
@@ -101,9 +97,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     initializeLocation();
   }, []);
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [MIN_SHEET_HEIGHT, "50%", "90%"], []);
-
   const handleSheetChanges = useCallback((index: number) => {
     setSheetIndex(index);
   }, []);
@@ -137,39 +130,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     // 필요 시 네비게이션 추가
   };
 
-  const renderHandle = useCallback(
-    () => (
-      <View style={styles.bottomSheetHandle}>
-        <View style={styles.handleBar} />
-      </View>
-    ),
-    []
-  );
-
-  const renderContent = useCallback(
-    () => (
-      <BottomSheetScrollView
-        contentContainerStyle={styles.bottomSheetScrollViewContent}
-      >
-        <SegmentedControl activeTab={activeTab} setActiveTab={setActiveTab} />
-
-        {renderCenters()}
-      </BottomSheetScrollView>
-    ),
-    [activeTab]
-  );
-
-  const CustomBackground = ({ style }: BottomSheetBackgroundProps) => (
-    <View
-      style={[
-        style,
-        {
-          backgroundColor: colors.ui04,
-        },
-      ]}
-    />
-  );
-
   const initializeLocation = async () => {
     const isServiceEnabled = await checkIfLocationServicesEnabled();
     if (!isServiceEnabled) return;
@@ -187,7 +147,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   }, []);
 
   // 센터 검색 및 선택 시 이동
-  const { location: centerLocation } = useContext(MapContext);
+  const { location: centerLocation, selectedCenter } = useContext(MapContext);
+
+  console.log("selectedCenter", selectedCenter);
 
   useEffect(() => {
     if (mapViewRef.current) {
@@ -229,61 +191,21 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       />
 
       {/* 지도 */}
-      <NaverMapView
-        ref={mapViewRef}
-        style={styles.map}
-        center={{
-          latitude: location?.latitude,
-          longitude: location?.longitude,
-          zoom: 16,
-        }}
-      >
-        {/* 내 위치 - location 없으면 제외 */}
-        {location ? (
-          <NaverMapMarkerOverlay
-            latitude={location?.latitude ?? 0}
-            longitude={location?.longitude ?? 0}
-            width={24}
-            height={24}
-            anchor={{ x: 0.5, y: 1 }}
-            image={require("../assets/images/maps/me.png")}
-          />
-        ) : null}
-
-        {centers.map((center) => (
-          <NaverMapMarkerOverlay
-            key={center.id}
-            latitude={center.latitude}
-            longitude={center.longitude}
-            width={32}
-            height={32}
-            anchor={{ x: 0.5, y: 1 }}
-            image={require("../assets/images/maps/center.png")}
-            onClick={() => handleCenterMarkerClick(center.id)}
-          />
-        ))}
-      </NaverMapView>
+      <MapViewComponent
+        centers={centers}
+        handleCenterMarkerClick={handleCenterMarkerClick}
+        location={location}
+        mapViewRef={mapViewRef}
+      />
 
       <View style={styles.bottomSheetContainer} pointerEvents="box-none">
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={0}
-          snapPoints={snapPoints}
-          enablePanDownToClose={false}
-          backdropComponent={null}
-          /* 
-              바텀시트가 전체 높이까지 열릴 수 있으면서도, 
-              바텀시트가 닫혀있거나 부분적으로 열려있을 때 지도와의 인터랙션 가능
-              바텀시트는 핸들 영역이나 내부 컨텐츠를 통해서만 드래그 가능
-          */
-          handleComponent={renderHandle}
-          enableOverDrag={false}
-          enableContentPanningGesture={true}
-          onChange={handleSheetChanges}
-          backgroundComponent={CustomBackground}
-        >
-          {renderContent()}
-        </BottomSheet>
+        <BottomSheetComponent
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          renderCenters={renderCenters}
+          sheetIndex={sheetIndex}
+          handleSheetChanges={handleSheetChanges}
+        />
       </View>
 
       {/* "현재 위치로 이동" 버튼 */}
@@ -327,25 +249,6 @@ const styles = StyleSheet.create({
     padding: 16,
     // backgroundColor: colors.ui04,
   },
-  bottomSheetHandle: {
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    backgroundColor: colors.ui04,
-  },
-  handleBar: {
-    width: 40,
-    height: 4,
-    backgroundColor: colors.bottomSheetHandleBlack,
-    borderRadius: 2,
-  },
-  bottomSheetScrollViewContent: {
-    padding: 20,
-    backgroundColor: colors.ui04,
-    flexGrow: 1,
-  },
   bottomSheetContent: {
     padding: 20,
     height: "100%",
@@ -387,75 +290,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
   },
-  centerContainer: {
-    backgroundColor: colors.ui03,
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   centerName: {
-    color: "white",
-    fontWeight: "bold",
     fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
   },
   centerAddress: {
+    fontSize: 14,
     color: "rgba(255, 255, 255, 0.5)",
-    fontSize: 14,
-  },
-  visitCountContainer: {
-    marginTop: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderWidth: 1,
-    borderRadius: 16,
-  },
-  visitCountText: {
-    color: colors.textWhite,
-    fontSize: 14,
-  },
-  starIcon: {
-    width: 32,
-    height: 32,
-  },
-  openStatus: {
-    color: "#d1d5db",
-    fontSize: 14,
-    marginTop: 8,
-  },
-  segmentedControl: {
-    flexDirection: "row",
-    marginBottom: 16,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  segmentButton: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: "center",
-    backgroundColor: colors.ui03,
-    color: colors.coreSecondary,
-  },
-  segmentButtonLeft: {
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-  },
-  segmentButtonRight: {
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-  },
-  segmentButtonText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: colors.text02,
-  },
-  activeSegment: {
-    backgroundColor: colors.primary,
-  },
-  activeSegmentText: {
-    color: colors.textBlack,
+    marginTop: 4,
   },
 });

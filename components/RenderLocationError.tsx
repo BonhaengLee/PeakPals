@@ -20,7 +20,12 @@ export const RenderLocationError = ({
         {locationError || "현재 위치를 가져오는 중입니다..."}
       </Text>
       {locationError && (
-        <Pressable onPress={retryFunction} style={styles.retryButton}>
+        <Pressable
+          onPress={() => {
+            retryFunction();
+          }}
+          style={styles.retryButton}
+        >
           <Text style={styles.retryButtonText}>다시 시도</Text>
         </Pressable>
       )}

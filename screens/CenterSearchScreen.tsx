@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,15 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { climbingCenters } from "../data/climbing-centers";
 import { colors } from "../styles/colors";
+import { ClimbingCenter } from "../types";
+import { MapContext } from "../context/MapContext";
+import { supabase } from "../lib/supabaseClient";
 
 export default function CenterSearchScreen({ navigation }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,80 +31,88 @@ export default function CenterSearchScreen({ navigation }) {
     }
   }, [searchTerm]);
 
+  const [sbCenters, setSBCenters] = useState<ClimbingCenter[]>([]);
+  useEffect(() => {
+    const fetchCenters = async () => {
+      const { data, error } = await supabase.from("ClimbingCenter").select("*");
+
+      if (error) {
+        console.error("Error fetching centers:", error);
+      } else {
+        setSBCenters(data || []);
+      }
+    };
+
+    fetchCenters();
+  }, []);
+
+  const { updateLocation, setSelectedCenter } = useContext(MapContext);
+
   const handleCenterSelect = (centerId: number) => {
-    console.log("Selected center ID:", centerId);
-    navigation.goBack(); // 센터 선택 후 이전 화면으로 돌아가기
+    const selectedCenter = sbCenters.find((center) => center.id === centerId);
+    if (selectedCenter) {
+      updateLocation(selectedCenter.latitude, selectedCenter.longitude);
+      setSelectedCenter(selectedCenter); // 선택된 센터 저장
+      console.log("selectedCenter", selectedCenter);
+      navigation.goBack();
+    }
   };
 
   return (
-    <>
-      {/* <StatusBar translucent={false} backgroundColor="#070709" /> */}
+    <View style={styles.container}>
+      <View style={styles.searchHeader}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.closeButton}
+        >
+          <AntDesign name="close" size={20} color="black" />
+        </TouchableOpacity>
 
-      {/* <SafeAreaView style={styles.safeArea}> */}
-      <View style={styles.container}>
-        {/* 상단 X 버튼 및 검색바 */}
-        <View style={styles.searchHeader}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.closeButton}
-          >
-            <AntDesign name="close" size={20} color="black" />
-          </TouchableOpacity>
-
-          <View style={styles.searchBarContainer}>
-            <TextInput
-              style={styles.searchInput}
-              value={searchTerm}
-              placeholder="센터명 및 위치 검색"
-              placeholderTextColor="#B6B6B6"
-              onChangeText={setSearchTerm}
-              autoFocus={true}
-            />
-            <Ionicons
-              name="search"
-              size={24}
-              color="white"
-              style={styles.searchIcon}
-            />
-          </View>
+        <View style={styles.searchBarContainer}>
+          <TextInput
+            style={styles.searchInput}
+            value={searchTerm}
+            placeholder="센터명 및 위치 검색"
+            placeholderTextColor="#B6B6B6"
+            onChangeText={setSearchTerm}
+            autoFocus={true}
+          />
+          <Ionicons
+            name="search"
+            size={24}
+            color="white"
+            style={styles.searchIcon}
+          />
         </View>
-
-        {/* 등록 요청 섹션 */}
-        <View style={styles.registerRequest}>
-          <Text style={styles.registerText}>찾는 장소가 없으신가요?</Text>
-          <TouchableOpacity onPress={() => console.log("등록 요청")}>
-            <Text style={styles.registerButton}>등록 요청</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* 검색 결과 목록 */}
-        <FlatList
-          data={filteredCenters}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleCenterSelect(item.id)}>
-              <View style={styles.centerItem}>
-                <Text style={styles.centerName}>{item.name}</Text>
-                <Text style={styles.centerAddress}>{item.address}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          ListEmptyComponent={() => (
-            <Text style={styles.noResults}>검색 결과가 없습니다</Text>
-          )}
-        />
       </View>
-      {/* </SafeAreaView> */}
-    </>
+
+      <View style={styles.registerRequest}>
+        <Text style={styles.registerText}>찾는 장소가 없으신가요?</Text>
+        <TouchableOpacity onPress={() => console.log("등록 요청")}>
+          <Text style={styles.registerButton}>등록 요청</Text>
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        data={filteredCenters}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleCenterSelect(item.id)}>
+            <View style={styles.centerItem}>
+              <Text style={styles.centerName}>{item.name}</Text>
+              <Text style={styles.centerAddress}>{item.address}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        ListEmptyComponent={() => (
+          <Text style={styles.noResults}>검색 결과가 없습니다</Text>
+        )}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#070709", // 배경색을 검은색으로 설정
-    paddingTop: StatusBar.currentHeight,
-  },
   container: {
     flex: 1,
     backgroundColor: "#070709", // 배경색을 검은색으로 설정

@@ -22,12 +22,11 @@ export const RenderLocationError = ({
       {locationError && (
         <Pressable
           onPress={() => {
-            console.log("다시 시도 버튼 클릭됨");
             retryFunction();
           }}
           style={styles.retryButton}
         >
-          <Text style={styles.retryButtonText}>다시 시도dafsdasdf</Text>
+          <Text style={styles.retryButtonText}>다시 시도</Text>
         </Pressable>
       )}
       {!locationError && <ActivityIndicator size="large" color="gray" />}

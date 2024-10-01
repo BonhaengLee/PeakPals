@@ -123,11 +123,36 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     fetchCenters();
   }, []);
 
-  const handleCenterMarkerClick = (centerId: number) => {
-    // 센터 ID를 기반으로 해당 센터 페이지로 이동하는 로직
-    // 여기서 라우팅 처리
-    console.log("센터 선택됨, ID:", centerId);
-    // 필요 시 네비게이션 추가
+  const { setSelectedCenter } = useContext(MapContext);
+  const handleCenterMarkerClick = async (centerId: number) => {
+    try {
+      const { data, error } = await supabase
+        .from("ClimbingCenter")
+        .select("*")
+        .eq("id", centerId)
+        .single(); // 단일 결과를 가져옵니다.
+
+      if (error) {
+        console.error("센터 데이터를 가져오는 중 오류 발생:", error);
+      } else {
+        console.log("선택된 센터 데이터:", data);
+
+        // 선택된 센터 데이터를 MapContext의 selectedCenter에 저장
+        setSelectedCenter(data);
+
+        // 선택된 센터 위치로 카메라 이동
+        if (mapViewRef.current) {
+          mapViewRef.current.animateCameraTo({
+            latitude: data.latitude,
+            longitude: data.longitude,
+            zoom: 16,
+            duration: 800, // 카메라 이동 애니메이션 시간 (밀리초)
+          });
+        }
+      }
+    } catch (error) {
+      console.error("센터 데이터를 가져오는 중 오류 발생:", error);
+    }
   };
 
   const initializeLocation = async () => {
@@ -192,10 +217,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
       {/* 지도 */}
       <MapViewComponent
+        ref={mapViewRef}
         centers={centers}
         handleCenterMarkerClick={handleCenterMarkerClick}
         location={location}
-        mapViewRef={mapViewRef}
       />
 
       <View style={styles.bottomSheetContainer} pointerEvents="box-none">

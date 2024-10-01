@@ -104,7 +104,6 @@ export default function BottomSheetComponent({
       // 바텀시트는 SearchBar보다는 z-index가 커야 함
     >
       {renderCenterInfo()}
-      <Text>asdjflkasjd</Text>
     </BottomSheet>
   ) : (
     <BottomSheet

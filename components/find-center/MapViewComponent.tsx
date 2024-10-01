@@ -13,20 +13,17 @@ interface MapViewComponentProps {
   centers: ClimbingCenter[];
   handleCenterMarkerClick: (centerId: number) => void;
   location: Location;
-  mapViewRef: React.RefObject<NaverMapViewRef>;
 }
 
-const MapViewComponent = forwardRef(function MapViewComponent({
-  centers,
-  handleCenterMarkerClick,
-  location,
-  mapViewRef,
-}: MapViewComponentProps) {
+const MapViewComponent = forwardRef(function MapViewComponent(
+  { centers, handleCenterMarkerClick, location }: MapViewComponentProps,
+  ref: React.RefObject<NaverMapViewRef>
+) {
   const { location: centerLocation } = useContext(MapContext);
 
   useEffect(() => {
-    if (mapViewRef.current) {
-      mapViewRef.current.animateCameraTo({
+    if (ref.current) {
+      ref.current.animateCameraTo({
         latitude: centerLocation.latitude,
         longitude: centerLocation.longitude,
         zoom: 16,
@@ -37,7 +34,7 @@ const MapViewComponent = forwardRef(function MapViewComponent({
 
   return (
     <NaverMapView
-      ref={mapViewRef}
+      ref={ref}
       style={styles.map}
       center={{
         latitude: location?.latitude,
@@ -66,7 +63,10 @@ const MapViewComponent = forwardRef(function MapViewComponent({
           height={32}
           anchor={{ x: 0.5, y: 1 }}
           image={require("../../assets/images/maps/center.png")}
-          onClick={() => handleCenterMarkerClick(center.id)}
+          onTap={() => {
+            console.log("Marker clicked:", center.id); // 디버깅용 로그
+            handleCenterMarkerClick(center.id);
+          }}
         />
       ))}
     </NaverMapView>

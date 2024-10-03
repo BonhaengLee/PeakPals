@@ -17,8 +17,11 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { Ionicons } from "@expo/vector-icons";
 
 import { supabase } from "../lib/supabaseClient";
 import { ClimbingCenter } from "../types";
@@ -77,8 +80,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchSubmit = () => {
+    setSearchMode(true); // 검색 모드로 전환
     console.log("검색어:", searchTerm);
-    // 검색 기능 처리
   };
 
   useEffect(() => {
@@ -101,8 +104,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     setSheetIndex(index);
   }, []);
 
-  console.log("sheetIndex", sheetIndex);
-
   const [activeTab, setActiveTab] = useState("saved");
   const renderCenters = () => {
     if (activeTab === "saved") {
@@ -111,6 +112,32 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       return renderNearbyCenters(nearbyCenters);
     }
   };
+
+  // FIXME: 로직 확인 필요
+  const [nearbyCenters, setNearbyCenters] = useState<ClimbingCenter[]>([]);
+  const fetchNearbyCenters = useCallback(async () => {
+    if (!location) return;
+
+    const { data, error } = await supabase.rpc("nearby_centers", {
+      lat: location.latitude,
+      lng: location.longitude,
+      radius: 200, // 200 meters
+    });
+
+    if (error) {
+      console.error("Error fetching nearby centers:", error);
+    } else {
+      setNearbyCenters(data || []);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (location) {
+      fetchNearbyCenters();
+      const interval = setInterval(fetchNearbyCenters, 5 * 60 * 1000); // 5 minutes
+      return () => clearInterval(interval);
+    }
+  }, [location, fetchNearbyCenters]);
 
   const [centers, setCenters] = useState<ClimbingCenter[]>([]); // Supabase에서 가져온 센터 데이터
   useEffect(() => {
@@ -176,8 +203,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   // 센터 검색 및 선택 시 이동
   const { location: centerLocation, selectedCenter } = useContext(MapContext);
 
-  console.log("selectedCenter", selectedCenter);
-
   useEffect(() => {
     if (mapViewRef.current) {
       mapViewRef.current.animateCameraTo({
@@ -188,6 +213,41 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       });
     }
   }, [centerLocation]);
+
+  const [savedCenters, setSavedCenters] = useState<ClimbingCenter[]>([]);
+
+  useEffect(() => {
+    fetchSavedCenters();
+  }, []);
+
+  const fetchSavedCenters = async () => {
+    const { data, error } = await supabase
+      .from("saved_centers")
+      .select("center_id")
+      .eq("user_id", supabase.auth.user()?.id);
+
+    if (error) {
+      console.error("Error fetching saved centers:", error);
+    } else {
+      const centerIds = data.map((item) => item.center_id);
+      const { data: centerData, error: centerError } = await supabase
+        .from("ClimbingCenter")
+        .select("*")
+        .in("id", centerIds);
+
+      if (centerError) {
+        console.error("Error fetching center details:", centerError);
+      } else {
+        setSavedCenters(centerData || []);
+      }
+    }
+  };
+
+  const handleBackButtonPress = () => {
+    // 검색 모드에서 벗어나고 바텀시트를 기존 상태로 돌립니다
+    setActiveTab("saved");
+    setSelectedCenter(null);
+  };
 
   if (locationError) {
     return (
@@ -209,13 +269,41 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   return (
     <View style={styles.container}>
-      {/* 검색 바 */}
-      <CenterSearchBar
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        onSearchSubmit={handleSearchSubmit}
-        onClick={() => navigation.navigate("CenterSearch")}
-      />
+      <View style={styles.searchHeader}>
+        {selectedCenter ? (
+          <Pressable onPress={handleBackButtonPress} style={styles.closeButton}>
+            <AntDesign name="close" size={20} color="black" />
+          </Pressable>
+        ) : null}
+
+        <Pressable
+          style={styles.searchBarContainer}
+          onPress={() => navigation.navigate("CenterSearch")}
+        >
+          <TextInput
+            style={styles.searchInput}
+            // value={searchTerm}
+            placeholder="센터명 및 위치 검색"
+            placeholderTextColor="#B6B6B6"
+            // onChangeText={setSearchTerm}
+            autoFocus={true}
+            editable={false}
+          />
+          <Ionicons
+            name="search"
+            size={24}
+            color="white"
+            style={styles.searchIcon}
+          />
+        </Pressable>
+        {/* 검색 바 */}
+        {/* <CenterSearchBar
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+          onSearchSubmit={handleSearchSubmit}
+          onClick={() => navigation.navigate("CenterSearch")}
+        /> */}
+      </View>
 
       {/* 지도 */}
       <MapViewComponent
@@ -326,5 +414,37 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgba(255, 255, 255, 0.5)",
     marginTop: 4,
+  },
+  closeButton: {
+    padding: 14,
+    backgroundColor: "#fff",
+    borderRadius: 50,
+    marginRight: 8,
+    height: 48,
+    width: 48,
+  },
+  searchHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    zIndex: 1,
+    backgroundColor: "transparent",
+    margin: 16,
+  },
+  searchBarContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+  },
+  searchInput: {
+    color: colors.textBlack,
+    fontSize: 16,
+  },
+  searchIcon: {
+    marginLeft: 8,
   },
 });

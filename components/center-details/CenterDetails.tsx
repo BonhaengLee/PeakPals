@@ -1,6 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable, Share } from "react-native";
+
 import { ClimbingCenter } from "../../types";
+import { supabase } from "../../utils/supabase";
 
 // Map color names to actual colors for the difficulty boxes
 const colorMap: { [key: string]: string } = {
@@ -16,6 +18,68 @@ const colorMap: { [key: string]: string } = {
 };
 
 function CenterDetails({ selectedCenter }: { selectedCenter: ClimbingCenter }) {
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    checkIfSaved();
+  }, [selectedCenter]);
+
+  const checkIfSaved = async () => {
+    const { data, error } = await supabase
+      .from("saved_centers")
+      .select()
+      .eq("user_id", supabase.auth.user()?.id)
+      .eq("center_id", selectedCenter.id)
+      .single();
+
+    if (error) {
+      console.error("Error checking saved status:", error);
+    } else {
+      setIsSaved(!!data);
+    }
+  };
+
+  const toggleSave = async () => {
+    if (isSaved) {
+      const { error } = await supabase
+        .from("saved_centers")
+        .delete()
+        .eq("user_id", supabase.auth.user()?.id)
+        .eq("center_id", selectedCenter.id);
+
+      if (error) {
+        console.error("Error removing saved center:", error);
+      } else {
+        setIsSaved(false);
+      }
+    } else {
+      const { error } = await supabase.from("saved_centers").insert({
+        user_id: supabase.auth.user()?.id,
+        center_id: selectedCenter.id,
+      });
+
+      if (error) {
+        console.error("Error saving center:", error);
+      } else {
+        setIsSaved(true);
+      }
+    }
+  };
+
+  const handleCall = () => {
+    Linking.openURL(`tel:${selectedCenter.phone}`);
+  };
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `Check out ${selectedCenter.name} at ${selectedCenter.address}`,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
   // Parse difficulty levels from the center's data
   const difficultyLevels = selectedCenter.difficulty_levels
     ? selectedCenter.difficulty_levels.split(" - ")
@@ -45,13 +109,13 @@ function CenterDetails({ selectedCenter }: { selectedCenter: ClimbingCenter }) {
     <View style={styles.centerDetailContainer}>
       {/* Buttons for saved, phone, and share */}
       <View style={styles.buttonRow}>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>저장됨</Text>
+        <Pressable style={styles.button} onPress={toggleSave}>
+          <Text style={styles.buttonText}>{isSaved ? "저장됨" : "저장"}</Text>
         </Pressable>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={handleCall}>
           <Text style={styles.buttonText}>전화</Text>
         </Pressable>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={handleShare}>
           <Text style={styles.buttonText}>공유</Text>
         </Pressable>
       </View>

@@ -101,6 +101,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     setSheetIndex(index);
   }, []);
 
+  console.log("sheetIndex", sheetIndex);
+
   const [activeTab, setActiveTab] = useState("saved");
   const renderCenters = () => {
     if (activeTab === "saved") {

@@ -115,7 +115,7 @@ export default function CenterSearchScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#070709", // 배경색을 검은색으로 설정
+    backgroundColor: colors.backgroundBlack,
     padding: 16,
   },
   searchHeader: {

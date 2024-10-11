@@ -83,12 +83,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     }
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const handleSearchSubmit = () => {
-    setSearchMode(true); // 검색 모드로 전환
-    console.log("검색어:", searchTerm);
-  };
-
   useEffect(() => {
     const initializeLocation = async () => {
       const isServiceEnabled = await checkIfLocationServicesEnabled();
@@ -262,10 +256,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         >
           <TextInput
             style={styles.searchInput}
-            // value={searchTerm}
             placeholder="센터명 및 위치 검색"
             placeholderTextColor="#B6B6B6"
-            // onChangeText={setSearchTerm}
             autoFocus={true}
             editable={false}
           />
@@ -276,13 +268,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             style={styles.searchIcon}
           />
         </Pressable>
-        {/* 검색 바 */}
-        {/* <CenterSearchBar
-          searchTerm={searchTerm}
-          onSearchTermChange={setSearchTerm}
-          onSearchSubmit={handleSearchSubmit}
-          onClick={() => navigation.navigate("CenterSearch")}
-        /> */}
       </View>
 
       {/* 지도 */}

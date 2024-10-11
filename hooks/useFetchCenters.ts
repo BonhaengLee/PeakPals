@@ -9,13 +9,18 @@ export const useFetchCenters = (
   const [nearbyCenters, setNearbyCenters] = useState<ClimbingCenter[]>([]);
   const [centers, setCenters] = useState<ClimbingCenter[]>([]);
 
+  console.log({ location });
+
+  // 특정 위치로부터 200m 이내에 있는 센터를 가져오는 함수
   const fetchNearbyCenters = useCallback(async () => {
     if (!location) return;
 
-    const { data, error } = await supabase
-      .from("ClimbingCenter")
-      .select("*")
-      .limit(20);
+    // Postgres, postgis를 활용해 위치 기반 필터링을 수행
+    const { data, error } = await supabase.rpc("get_nearby_centers", {
+      lat: location.latitude,
+      lon: location.longitude,
+      radius: 200, // 200m 반경
+    });
 
     if (error) {
       console.error("Error fetching nearby centers:", error);

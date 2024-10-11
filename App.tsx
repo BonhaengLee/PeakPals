@@ -178,6 +178,7 @@ export default function App() {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
+
         if (!session) {
           setInitialRoute("Login");
         }

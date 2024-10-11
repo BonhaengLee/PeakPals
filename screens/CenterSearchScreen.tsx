@@ -14,7 +14,7 @@ import { climbingCenters } from "../data/climbing-centers";
 import { colors } from "../styles/colors";
 import { ClimbingCenter } from "../types";
 import { MapContext } from "../context/MapContext";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../utils/supabase";
 
 export default function CenterSearchScreen({ navigation }) {
   const [searchTerm, setSearchTerm] = useState("");

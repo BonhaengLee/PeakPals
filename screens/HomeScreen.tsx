@@ -44,6 +44,7 @@ import MapViewComponent from "../components/find-center/MapViewComponent";
 import { supabase } from "../utils/supabase";
 import { useSession } from "../hooks/useSession";
 import { useFetchCenters } from "../hooks/useFetchCenters";
+import { useLocation } from "../hooks/useLocation";
 
 // MainTabs 높이 + 40px
 const MAIN_TABS_HEIGHT = 92;
@@ -55,23 +56,15 @@ interface HomeScreenProps {
 }
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-  const [locationPermission, setLocationPermission] = useState<boolean | null>(
-    null
-  );
-  const [locationError, setLocationError] = useState<string | null>(null);
-  const [sheetIndex, setSheetIndex] = useState(0);
+  const session = useSession(); // 세션 정보 가져오기
+  const { location, locationPermission, locationError, initializeLocation } =
+    useLocation();
 
   const mapViewRef = useRef<NaverMapViewRef>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => [MIN_SHEET_HEIGHT, "50%", "90%"], []); // Snap points 추가
 
-  const session = useSession(); // 세션 정보 가져오기
-
-  const { nearbyCenters, centers } = useFetchCenters(location);
+  const [sheetIndex, setSheetIndex] = useState(0);
 
   const moveToCurrentLocation = () => {
     if (location && mapViewRef.current) {
@@ -86,21 +79,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     }
   };
 
-  useEffect(() => {
-    const initializeLocation = async () => {
-      const isServiceEnabled = await checkIfLocationServicesEnabled();
-      if (!isServiceEnabled) return;
-
-      const hasPermission = await requestLocationPermission(
-        setLocationPermission
-      );
-      if (hasPermission) {
-        startTrackingLocation(setLocation, setLocationError);
-      }
-    };
-
-    initializeLocation();
-  }, []);
+  const { nearbyCenters, centers } = useFetchCenters(location);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSheetIndex(index);
@@ -153,22 +132,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       console.error("센터 데이터를 가져오는 중 오류 발생:", error);
     }
   };
-
-  const initializeLocation = async () => {
-    const isServiceEnabled = await checkIfLocationServicesEnabled();
-    if (!isServiceEnabled) return;
-
-    const hasPermission = await requestLocationPermission(
-      setLocationPermission
-    );
-    if (hasPermission) {
-      startTrackingLocation(setLocation, setLocationError);
-    }
-  };
-
-  useEffect(() => {
-    initializeLocation(); // 처음 로드될 때 위치 정보 요청
-  }, []);
 
   // 센터 검색 및 선택 시 이동
   const { location: centerLocation, selectedCenter } = useContext(MapContext);

@@ -16,19 +16,19 @@ export const useLocation = () => {
   );
   const [locationError, setLocationError] = useState<string | null>(null);
 
+  const initializeLocation = async () => {
+    const isServiceEnabled = await checkIfLocationServicesEnabled();
+    if (!isServiceEnabled) return;
+
+    const hasPermission = await requestLocationPermission(
+      setLocationPermission
+    );
+    if (hasPermission) {
+      startTrackingLocation(setLocation, setLocationError);
+    }
+  };
+
   useEffect(() => {
-    const initializeLocation = async () => {
-      const isServiceEnabled = await checkIfLocationServicesEnabled();
-      if (!isServiceEnabled) return;
-
-      const hasPermission = await requestLocationPermission(
-        setLocationPermission
-      );
-      if (hasPermission) {
-        startTrackingLocation(setLocation, setLocationError);
-      }
-    };
-
     initializeLocation();
   }, []);
 
@@ -36,6 +36,8 @@ export const useLocation = () => {
     location,
     locationPermission,
     locationError,
+    initializeLocation, // 필요할 때 다시 호출할 수 있도록 반환
+    setLocation,
     setLocationPermission,
     setLocationError,
   };

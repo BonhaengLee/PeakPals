@@ -139,8 +139,6 @@ export default function BottomSheetComponent({
     }
   };
 
-  console.log({ isCenterDetail });
-
   return selectedCenter ? (
     <BottomSheet
       ref={bottomSheetRef}

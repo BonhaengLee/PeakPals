@@ -21,6 +21,7 @@ import CenterDetails from "../center-details/CenterDetails";
 import SkeletonCenterDetails from "../center-details/SkeletonCenterDetails";
 
 interface BottomSheetComponentProps {
+  bottomSheetRef: React.RefObject<BottomSheet>;
   activeTab: string;
   setActiveTab: (tab: string) => void;
   renderCenters: () => React.ReactNode;
@@ -33,6 +34,7 @@ interface BottomSheetComponentProps {
   바텀시트는 핸들 영역이나 내부 컨텐츠를 통해서만 드래그 가능
 */
 export default function BottomSheetComponent({
+  bottomSheetRef,
   activeTab,
   setActiveTab,
   renderCenters,
@@ -47,7 +49,6 @@ export default function BottomSheetComponent({
         : [MIN_SHEET_HEIGHT, "50%", "90%"],
     [selectedCenter]
   );
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const renderHandle = useCallback(
     () => (
@@ -124,7 +125,7 @@ export default function BottomSheetComponent({
     handleSheetChanges(index);
 
     // Set isCenterDetail based on whether the sheet is fully open or not
-    if (index === snapPoints.length - 1) {
+    if (index === snapPoints.length - 1 && !isCenterDetail) {
       setLoading(true); // Start loading when expanding
 
       // Simulate loading delay before showing details
@@ -155,7 +156,6 @@ export default function BottomSheetComponent({
       handleComponent={isCenterDetail ? renderCenterDetailHandle : renderHandle}
       enableOverDrag={false}
       enableContentPanningGesture={true}
-      onChange={handleSheetChanges}
       backgroundComponent={CustomBackground}
       onChange={handleSheetChangesWithData}
     >

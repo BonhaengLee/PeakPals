@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 
 import { SavedCenter, SimplifiedCenter } from "../../types";
 
@@ -21,14 +21,21 @@ export const renderSavedCenters = (centers: SavedCenter[]) => {
   ));
 };
 
-export const renderNearbyCenters = (centers: SimplifiedCenter[]) => {
+export const renderNearbyCenters = (
+  centers: SimplifiedCenter[],
+  handleCenterMarkerClick: (centerId: number) => void
+) => {
   return centers.map((center, index) => (
-    <View key={index} style={styles.centerContainer}>
+    <Pressable
+      key={center.id}
+      onPress={() => handleCenterMarkerClick(center.id)} // 센터 클릭 시 handleCenterMarkerClick 호출
+      style={styles.centerContainer}
+    >
       <View>
         <Text style={styles.centerName}>{center.name}</Text>
         <Text style={styles.centerAddress}>{center.address}</Text>
       </View>
-    </View>
+    </Pressable>
   ));
 };
 

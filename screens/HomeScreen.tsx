@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Ionicons } from "@expo/vector-icons";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 import { ClimbingCenter } from "../types";
 import { colors } from "../styles/colors";
@@ -65,6 +66,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [sheetIndex, setSheetIndex] = useState(0);
 
   const mapViewRef = useRef<NaverMapViewRef>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => [MIN_SHEET_HEIGHT, "50%", "90%"], []); // Snap points 추가
 
   const session = useSession(); // 세션 정보 가져오기
 
@@ -108,11 +111,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     if (activeTab === "saved") {
       return renderSavedCenters(savedCenters);
     } else if (activeTab === "nearby") {
-      return renderNearbyCenters(nearbyCenters);
+      return renderNearbyCenters(nearbyCenters, handleCenterMarkerClick);
     }
   };
 
   const { setSelectedCenter } = useContext(MapContext);
+
   const handleCenterMarkerClick = async (centerId: number) => {
     try {
       const { data, error } = await supabase
@@ -137,6 +141,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             zoom: 16,
             duration: 800, // 카메라 이동 애니메이션 시간 (밀리초)
           });
+        }
+
+        // 바텀시트를 적절한 높이로 조정, snapPoints 범위 내에서 처리
+        if (bottomSheetRef.current && snapPoints.length > 0) {
+          // 최소 범위로 이동 (첫 번째 snapPoint로)
+          bottomSheetRef.current.snapToIndex(0); // 적절한 인덱스를 지정
         }
       }
     } catch (error) {
@@ -280,6 +290,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
       <View style={styles.bottomSheetContainer} pointerEvents="box-none">
         <BottomSheetComponent
+          bottomSheetRef={bottomSheetRef}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           renderCenters={renderCenters}

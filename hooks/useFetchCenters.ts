@@ -19,7 +19,7 @@ export const useFetchCenters = (
     const { data, error } = await supabase.rpc("get_nearby_centers", {
       lat: location.latitude,
       lon: location.longitude,
-      radius: 200, // 200m 반경
+      radius: 2000, // 200m 반경
     });
 
     if (error) {

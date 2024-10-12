@@ -16,9 +16,9 @@ import LinearGradient from "react-native-linear-gradient";
 import { MapContext } from "../../context/MapContext";
 import { SegmentedControl } from "./SegmentedControl";
 import { colors } from "../../styles/colors";
-import { MIN_SHEET_HEIGHT } from "../../screens/HomeScreen";
 import CenterDetails from "../center-details/CenterDetails";
 import SkeletonCenterDetails from "../center-details/SkeletonCenterDetails";
+import { MIN_SHEET_HEIGHT } from "../../constants/home";
 
 interface BottomSheetComponentProps {
   bottomSheetRef: React.RefObject<BottomSheet>;

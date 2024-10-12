@@ -45,11 +45,7 @@ import { supabase } from "../utils/supabase";
 import { useSession } from "../hooks/useSession";
 import { useFetchCenters } from "../hooks/useFetchCenters";
 import { useLocation } from "../hooks/useLocation";
-
-// MainTabs 높이 + 40px
-const MAIN_TABS_HEIGHT = 92;
-// 항상 최소한 이 높이까지만 내려가게 함
-export const MIN_SHEET_HEIGHT = MAIN_TABS_HEIGHT + 40;
+import { MIN_SHEET_HEIGHT } from "../constants/home";
 
 interface HomeScreenProps {
   navigation: RootStackScreenProps<"Home">["navigation"];
